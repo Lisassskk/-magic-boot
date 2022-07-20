@@ -2,7 +2,7 @@ export const testCode = `
   <template>
     <div class="aaa">
       {{ msg }}
-      <el-button type="primary" @click="$emit('xxClick')">阿斯顿发</el-button>
+      <a-button type="primary" @click="$emit('xxClick')">阿斯顿发</a-button>
       {{ props.aaaaaa }}
     </div>
   </template>

@@ -1,5 +1,5 @@
 <template>
-  <el-tree-select v-model="selectValue" :data="options" :key="modelValue" :placeholder="placeholder || (itemLabel && '请选择' + itemLabel)" v-bind="props.props" />
+  <a-tree-select :fieldNames = "{children:'children', title:'name', key:'key' }" v-model:value="selectValue" :tree-data="options" :key="modelValue" :placeholder="placeholder || (itemLabel && '请选择' + itemLabel)" v-bind="props.props" />
 </template>
 
 <script setup>
@@ -24,9 +24,11 @@
 
   selectValue.value = props.modelValue
   watch(() => props.modelValue, (value) => {
+    console.log('props.modelValue::',props.modelValue,value);
     selectValue.value = value
   })
   watch(selectValue, (value) => {
+    // console.log('selectValue::',selectValue,value);
     emit('update:modelValue', value)
   })
 

@@ -1,105 +1,107 @@
 <template>
-  <el-form ref="dataForm" :model="genInfo" :rules="genInfoRules" label-position="right" label-width="120px">
-    <el-tabs v-model="activeName">
-      <el-tab-pane label="表信息" name="basic">
-        <el-row :gutter="24">
-          <el-col :span="8">
-            <el-form-item label="数据源" prop="datasource">
-              <mb-select v-model="genInfo.datasource" url="/system/code/gen/database" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="表名" prop="tableName">
-              <mb-select v-model="genInfo.tableName" :options="tables" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="描述" prop="tableComment">
-              <el-input v-model="genInfo.tableComment" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-tab-pane>
-      <el-tab-pane label="字段信息" name="field">
+  <a-form ref="dataForm"  :model="genInfo" :rules="genInfoRules" label-position="right" label-width="120px">
+    <a-tabs v-model:activeKey="activeName">
+      <a-tab-pane tab="表信息" key="basic">
+        <a-row :gutter="24">
+          <a-col :span="8">
+            <a-form-item label="数据源" name="datasource">
+              <mb-select v-model:value="genInfo.datasource" url="/system/code/gen/database" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="8">
+            <a-form-item label="表名" name="tableName">
+              <mb-select v-model:value="genInfo.tableName" :options="tables" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="8">
+            <a-form-item label="描述" name="tableComment">
+              <a-input v-model:value="genInfo.tableComment" />
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-tab-pane>
+      <a-tab-pane tab="字段信息" key="field">
         <mb-editor-table v-model="genInfo.columns" :cols="cols" :show-no="false" :operation="false" :toolbar="false" />
-      </el-tab-pane>
-      <el-tab-pane label="生成信息" name="gen">
-        <el-row :gutter="24">
-          <el-col :span="24">
-            <el-form-item label="生成模板" prop="info.template">
-              <mb-select v-model="genInfo.info.template" :options="[{ label: '单表（增删改查）', value: 'singleTable' }]" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item prop="info.moduleName">
+      </a-tab-pane>
+      <a-tab-pane tab="生成信息" key="gen">
+        <a-row :gutter="24">
+          <a-col :span="24">
+            <a-form-item label="生成模板" :name="['info','template']">
+              <mb-select v-model:value="genInfo.info.template" :options="[{ label: '单表（增删改查）', value: 'singleTable' }]" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item  hasFeedback="true" :name="['info','moduleName']">
               <template #label>
                 模块名称
-                <el-tooltip content="第一级分组名称，例如：系统功能" placement="top">
-                  <el-icon><ElIconQuestionFilled /></el-icon>
-                </el-tooltip>
+                <a-tooltip content="第一级分组名称，例如：系统功能" placement="top">
+                  <a-icon><ElIconQuestionFilled /></a-icon>
+                </a-tooltip>
               </template>
-              <el-input v-model="genInfo.info.moduleName"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item prop="info.modulePath">
+              <a-input v-model:value="genInfo.info.moduleName"></a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item  :name="['info','modulePath']">
               <template #label>
                 模块路径
-                <el-tooltip content="第一级分组的路径，例如：/system" placement="top">
-                  <el-icon><ElIconQuestionFilled /></el-icon>
-                </el-tooltip>
+                <a-tooltip content="第一级分组的路径，例如：/system" placement="top">
+                  <a-icon><ElIconQuestionFilled /></a-icon>
+                </a-tooltip>
               </template>
-              <el-input v-model="genInfo.info.modulePath"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item prop="info.businessName">
+              <a-input v-model:value="genInfo.info.modulePath" autocomplete="off"></a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item :name="['info','businessName']">
               <template #label>
                 功能名称
-                <el-tooltip content="第二级分组名称，例如：菜单管理" placement="top">
-                  <el-icon><ElIconQuestionFilled /></el-icon>
-                </el-tooltip>
+                <a-tooltip content="第二级分组名称，例如：菜单管理" placement="top">
+                  <a-icon><ElIconQuestionFilled /></a-icon>
+                </a-tooltip>
               </template>
-              <el-input v-model="genInfo.info.businessName"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item prop="info.businessPath">
+              <a-input v-model:value="genInfo.info.businessName"></a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item :name="['info','businessPath']">
               <template #label>
                 功能路径
-                <el-tooltip content="第二级分组路径，例如：/menu" placement="top">
-                  <el-icon><ElIconQuestionFilled /></el-icon>
-                </el-tooltip>
+                <a-tooltip content="第二级分组路径，例如：/menu" placement="top">
+                  <a-icon><ElIconQuestionFilled /></a-icon>
+                </a-tooltip>
               </template>
-              <el-input v-model="genInfo.info.businessPath"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="上级菜单" prop="pid">
-              <el-tree-select v-model="genInfo.info.pid" :data="menuTree" :key="genInfo.info.pid" style="width: 100%" check-strictly />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item>
+              <a-input v-model:value="genInfo.info.businessPath"></a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="上级菜单" name="pid">
+              <a-tree-select v-model:value="genInfo.info.pid" :tree-data="menuTree" :key="genInfo.info.pid" style="width: 100%" check-strictly />
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item>
               <template #label>
                 代码生成
-                <el-tooltip content="接口和页面直接生成到magic-api的api,component" placement="top">
-                  <el-icon><ElIconQuestionFilled /></el-icon>
-                </el-tooltip>
+                <a-tooltip content="接口和页面直接生成到magic-api的api,component" placement="top">
+                  <a-icon><ElIconQuestionFilled /></a-icon>
+                </a-tooltip>
               </template>
-              <el-button type="primary" @click="executeGen()" style="margin-bottom: 10px">代码生成</el-button>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-tab-pane>
-    </el-tabs>
-  </el-form>
+              <a-button type="primary" @click="executeGen()" style="margin-bottom: 10px">代码生成</a-button>
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-tab-pane>
+    </a-tabs>
+  </a-form>
 </template>
 
 <script setup>
 import {reactive, ref, watch, getCurrentInstance, onMounted, nextTick} from 'vue'
   import genCode from '@/scripts/gen/gen-mb-list.js'
-  import { ElMessageBox } from 'element-plus'
+  import { Modal } from 'ant-design-vue'
+
+  // import { ElMessageBox } from 'element-plus'
   const { proxy } = getCurrentInstance()
   const dataForm = ref()
   const tables = ref([])
@@ -112,23 +114,25 @@ import {reactive, ref, watch, getCurrentInstance, onMounted, nextTick} from 'vue
       children: proxy.$treeTable.genTree(res.data.list)
     }]
   })
-  var validatePath = (rule, value, callback) => {
-    if(!value.startsWith('/')){
-      callback(new Error('请以“/”开头'));
-    }else if(value.endsWith('/')){
-      callback(new Error('不能以“/”结尾'));
+  let validatePath = (_rule, value) => {
+    if(value && !value.startsWith('/')){
+      return Promise.reject(new Error('请以“/”开头'));
+    }else if(value && value.endsWith('/')){
+      return Promise.reject(new Error('不能以“/”结尾'));
     }else{
-      callback();
+      return Promise.resolve();
     }
   }
   const genInfoRules = reactive({
-    tableName: [{ required: true, message: '请选择表', trigger: 'change' }],
-    tableComment: [{ required: true, message: '请输入描述', trigger: 'change' }],
-    'info.template': [{ required: true, message: '请选择模板', trigger: 'change' }],
-    'info.moduleName': [{ required: true, message: '请输入模块名称', trigger: 'change' }],
-    'info.modulePath': [{ required: true, message: '请输入模块路径', trigger: 'change' },  { validator: validatePath }],
-    'info.businessName': [{ required: true, message: '请输入功能名称', trigger: 'change' }],
-    'info.businessPath': [{ required: true, message: '请输入功能路径', trigger: 'change' },  { validator: validatePath }]
+    'tableName': [{ required: true, message: '请选择表', trigger: 'blur' }],
+    'tableComment': [{ required: true, message: '请输入描述', trigger: 'blur' }],
+    'info':{
+      'template': [{ required: true, message: '请选择模板', trigger: 'blur' }],
+      'moduleName': [{ required: true, message: '请输入模块名称', trigger: 'blur' }],
+      'modulePath':[{ validator: validatePath,required: true, trigger: 'blur'  }],
+      'businessName': [{ required: true, message: '请输入功能名称', trigger: 'blur' }],
+      'businessPath': [{ validator: validatePath,required: true, trigger: 'blur' }]
+    } 
   })
   const genInfo = ref({
     datasource: '',
@@ -347,28 +351,32 @@ import {reactive, ref, watch, getCurrentInstance, onMounted, nextTick} from 'vue
   }])
 
   function executeGen(){
-    dataForm.value.validate((valid) => {
+    dataForm.value.validate().then((valid) => {
+      console.log('*****************valid:{}',valid);
       if (valid) {
-        ElMessageBox.confirm('此操作会生成代码并覆盖, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          var formData = {...genInfo.value}
-          formData.info = JSON.stringify(genInfo.value.info)
-          formData.columns = JSON.stringify(genInfo.value.columns)
-          formData.componentScript = genCode(genInfo.value.info.modulePath+genInfo.value.info.businessPath, genInfo.value.columns)
-          formData.datasource = genInfo.value.datasource
-          proxy.$post('/system/code/gen/execute', formData).then((res) => {
-            if(res.data == 1){
-              proxy.$notify({
-                title: '成功',
-                message: '生成成功',
-                type: 'success',
-                duration: 2000
-              })
-            }
-          })
+        Modal.confirm({
+          title:'提示',
+          content:'此操作会生成代码并覆盖, 是否继续?',
+          okText: '确定',
+          cancelText: '取消',
+          type: 'warning',
+          onOk:() => {
+                var formData = {...genInfo.value}
+                formData.info = JSON.stringify(genInfo.value.info)
+                formData.columns = JSON.stringify(genInfo.value.columns)
+                formData.componentScript = genCode(genInfo.value.info.modulePath+genInfo.value.info.businessPath, genInfo.value.columns)
+                formData.datasource = genInfo.value.datasource
+                proxy.$post('/system/code/gen/execute', formData).then((res) => {
+                  if(res.data == 1){
+                    proxy.$notify({
+                      title: '成功',
+                      message: '生成成功',
+                      type: 'success',
+                      duration: 2000
+                    })
+                  }
+                })
+              }
         })
       }else{
         proxy.$message.error('表单校验未通过，请重新检查提交内容')
@@ -377,7 +385,7 @@ import {reactive, ref, watch, getCurrentInstance, onMounted, nextTick} from 'vue
   }
 
   function save(d){
-    dataForm.value.validate((valid) => {
+    dataForm.value.validate().then((valid) => {
       if (valid) {
         var formData = {...genInfo.value}
         formData.info = JSON.stringify(genInfo.value.info)

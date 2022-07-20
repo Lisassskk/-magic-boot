@@ -1,30 +1,30 @@
 <template>
   <div class="app-container">
-    <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px" style="width: 800px">
-      <el-form-item label="头像" prop="headPortrait">
+    <a-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px" style="width: 800px">
+      <a-form-item label="头像" name="headPortrait">
         <mb-upload-image v-model="temp.headPortrait" />
-      </el-form-item>
-      <el-form-item label="姓名/昵称" prop="name">
-        <el-input v-model="temp.name" disabled />
-      </el-form-item>
-      <el-form-item label="手机号" prop="phone">
-        <el-input v-model.integer="temp.phone" maxlength="11" autocomplete="new-password" />
-      </el-form-item>
-      <el-form-item label="原密码" prop="password">
-        <el-input v-model="temp.password" type="password" autocomplete="new-password" />
-      </el-form-item>
-      <el-form-item label="新密码" prop="newPassword">
-        <el-input v-model="temp.newPassword" type="password" autocomplete="new-password" />
-      </el-form-item>
-      <el-form-item label="确认密码" prop="confirmPassword">
-        <el-input v-model="temp.confirmPassword" type="password" autocomplete="new-password" />
-      </el-form-item>
-      <el-form-item>
-        <el-button class="filter-item" type="primary" @click="save">
+      </a-form-item>
+      <a-form-item label="姓名/昵称" name="name">
+        <a-input v-model:value="temp.name" disabled />
+      </a-form-item>
+      <a-form-item label="手机号" name="phone">
+        <a-input v-model.integer="temp.phone" maxlength="11" autocomplete="new-password" />
+      </a-form-item>
+      <a-form-item label="原密码" name="password">
+        <a-input v-model:value="temp.password" type="password" autocomplete="new-password" />
+      </a-form-item>
+      <a-form-item label="新密码" name="newPassword">
+        <a-input v-model:value="temp.newPassword" type="password" autocomplete="new-password" />
+      </a-form-item>
+      <a-form-item label="确认密码" name="confirmPassword">
+        <a-input v-model:value="temp.confirmPassword" type="password" autocomplete="new-password" />
+      </a-form-item>
+      <a-form-item>
+        <a-button class="filter-item" type="primary" @click="save">
           提交
-        </el-button>
-      </el-form-item>
-    </el-form>
+        </a-button>
+      </a-form-item>
+    </a-form>
   </div>
 </template>
 
@@ -37,21 +37,21 @@ const { proxy } = getCurrentInstance()
 var validatePass2 = (rule, value, callback) => {
   if(temp.value.newPassword){
     if (value === '') {
-      callback(new Error('请再次输入密码'));
+      return Promise.reject(new Error('请再次输入密码'));
     } else if (value !== temp.value.newPassword) {
-      callback(new Error('两次输入密码不一致!'));
+      return Promise.reject(new Error('两次输入密码不一致!'));
     } else {
-      callback();
+      return Promise.resolve();
     }
   }else{
-    callback();
+    return Promise.resolve();
   }
 }
 const rules = reactive({
-  password: [{ required: true, message: '请输入原密码', trigger: 'change' }, { min: 6, message: '密码不少于6位' }],
-  phone: [{ min: 11, message: '请输入11位手机号', trigger: 'change' }],
+  password: [{ required: true, message: '请输入原密码', trigger: 'blur' }, { min: 6, message: '密码不少于6位' }],
+  phone: [{ min: 11, message: '请输入11位手机号', trigger: 'blur' }],
   newPassword: [{ min: 6, message: '密码不少于6位' }],
-  confirmPassword: [{ min: 6, message: '密码不少于6位' }, { validator: validatePass2 }],
+  confirmPassword: [{  validator: validatePass2,min: 6, message: '密码不少于6位' }],
 })
 const dataForm = ref()
 
@@ -75,7 +75,7 @@ function resetTemp() {
 }
 
 function save() {
-  dataForm.value.validate((valid) => {
+  dataForm.value.validate().then((valid) => {
     if (valid) {
       proxy.$post('/system/user/center/update', temp.value).then(() => {
         proxy.$notify({

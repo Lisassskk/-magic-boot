@@ -3,55 +3,56 @@
 
     <mb-search :where="tableOptions.where" @search="reloadTable" />
 
-    <el-row class="toolbar-container">
-      <el-button v-permission="'role:save'" class="filter-item" type="primary" icon="ElIconPlus" @click="handleCreate">
+    <a-row class="toolbar-container">
+      <a-button v-permission="'role:save'" class="filter-item" type="primary"  @click="handleCreate">
+        <template #icon><ElIconPlusOutlined /></template>
         添加
-      </el-button>
-    </el-row>
+      </a-button>
+    </a-row>
 
     <mb-table ref="table" v-bind="tableOptions" />
 
     <mb-dialog ref="roleFormDialog" :title="dialogTitle" width="900px" @confirm-click="save($event)">
       <template #content>
-        <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px">
-          <el-row :gutter="24">
-            <el-col :span="12">
-              <el-form-item label="角色名称" prop="name">
-                <el-input v-model="temp.name" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="角色编码" prop="code">
-                <el-input v-model="temp.code" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="24">
-            <el-col :span="24">
-              <el-form-item label="角色描述" prop="descRibe">
-                <el-input
+        <a-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px">
+          <a-row :gutter="24">
+            <a-col :span="12">
+              <a-form-item label="角色名称" name="name">
+                <a-input v-model:value="temp.name" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="角色编码" name="code">
+                <a-input v-model:value="temp.code" />
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="24">
+            <a-col :span="24">
+              <a-form-item label="角色描述" name="descRibe">
+                <a-input
                     type="textarea"
                     :rows="4"
                     placeholder="请输入描述"
-                    v-model="temp.descRibe">
-                </el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="24">
-            <el-col :span="12">
-              <el-form-item label="菜单权限" prop="menus">
+                    v-model:value="temp.descRibe">
+                </a-input>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="24">
+            <a-col :span="12">
+              <a-form-item label="菜单权限" name="menus">
                 <mb-tree ref="tree" v-model="temp.menus" :props="{ 'show-checkbox': true }" style="height: 270px; overflow: auto" url="/system/menu/tree" :search="true" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="数据权限" prop="permission">
-                <mb-select v-model="temp.permission" :options="permissionData" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="数据权限" name="permission">
+                <mb-select v-model:value="temp.permission" :options="permissionData" />
                 <mb-tree v-if="temp.permission == 1" style="height: 270px; overflow: auto" :props="{ 'check-strictly': true, 'show-checkbox': true }" ref="office" url="/system/office/tree" v-model="temp.offices" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form>
       </template>
     </mb-dialog>
 
@@ -125,7 +126,7 @@ const tableOptions = reactive({
           permission: 'role:save',
           label: '修改',
           type: 'text',
-          icon: 'ElIconEdit',
+          icon: 'ElIconEditOutlined',
           click: (row) => {
             handleUpdate(row)
           }
@@ -134,7 +135,7 @@ const tableOptions = reactive({
           permission: 'role:delete',
           label: '删除',
           type: 'text',
-          icon: 'ElIconDelete',
+          icon: 'ElIconDeleteOutlined',
           click: (row) => {
             proxy.$common.handleDelete({
               url: '/system/role/delete',
@@ -172,8 +173,8 @@ const tableOptions = reactive({
 const dialogTitle = ref('')
 const temp = ref(getTemp())
 const rules = reactive({
-  name: [{ required: true, message: '请输入角色名称', trigger: 'change' }],
-  code: [{ required: true, message: '请输入角色编码', trigger: 'change' }]
+  name: [{ required: true, message: '请输入角色名称', trigger: 'blur' }],
+  code: [{ required: true, message: '请输入角色编码', trigger: 'blur' }]
 })
 const downloadLoading = ref(false)
 
@@ -213,7 +214,7 @@ function handleCreate() {
 }
 
 function save(d) {
-  dataForm.value.validate((valid) => {
+  dataForm.value.validate().then((valid) => {
     if (valid) {
       d.loading()
       proxy.$post('/system/role/save', temp.value).then(() => {

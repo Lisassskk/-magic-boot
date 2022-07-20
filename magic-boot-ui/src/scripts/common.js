@@ -1,7 +1,10 @@
 import request from '@/scripts/request'
-import { ElMessageBox, ElNotification } from 'element-plus'
+// import { ElMessageBox, ElNotification } from 'element-plus'
 import global from '@/scripts/global'
 import { utils, writeFile } from 'xlsx'
+
+import { Modal } from 'ant-design-vue'
+import { notification } from 'ant-design-vue';
 
 const common = {}
 
@@ -32,26 +35,28 @@ common.getDictLabel = (type, value) => {
 common.handleDelete = (options) => {
   const url = options.url
   const id = options.id
-  ElMessageBox.confirm('此操作将永久删除该数据, 是否继续?', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  }).then(() => {
-    request({
-      url: url,
-      method: 'delete',
-      params: {
-        id: id
-      }
-    }).then(() => {
-      ElNotification({
-        title: '成功',
-        message: '删除成功',
-        type: 'success',
-        duration: 2000
+  Modal.confirm({
+    title:'提示',
+    content:'此操作将永久删除该数据, 是否继续?',
+    okText: '确定',
+    cancelText: '取消',
+    type: 'warning',
+    onOk:() => {
+      request({
+        url: url,
+        method: 'delete',
+        params: {
+          id: id
+        }
+      }).then(() => {
+        notification.open({
+          message: '删除成功',
+          type: 'success',
+          duration: 2000
+        })
+        options && options.done()
       })
-      options && options.done()
-    })
+    }
   })
 }
 

@@ -1,9 +1,15 @@
 import {createApp} from 'vue'
 const app = createApp(App)
-import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
-import '@/assets/css/common.css'
-import zhCn from 'element-plus/es/locale/lang/zh-cn'
+
+
+// import ElementPlus from 'element-plus'
+// import 'element-plus/dist/index.css'
+// import zhCn from 'element-plus/es/locale/lang/zh-cn'
+
+
+import Antd from 'ant-design-vue';
+
+import 'ant-design-vue/dist/antd.css';
 import 'vite-plugin-svg-icons/register'
 import App from './App.vue'
 import router from './scripts/router'
@@ -14,26 +20,31 @@ import { appComponent } from './scripts/dynamicComponent'
 import '@/permission'
 import global from '@/scripts/global.js'
 import '@/scripts/magic-import'
+
+import '@/assets/css/common.css'
+
 app.use(globalProperties)
 
 var loadDynamicComponent = false
-import { ElLoading } from 'element-plus'
+// import { ElLoading } from 'element-plus'
+
+import {Spin} from 'ant-design-vue'
 document.title = global.title
 router.beforeEach(async (to, from) => {
   global.tabValue.value = to.path
   if((to.name && global.visitedViews.length === 0 || global.visitedViews.every(it => it.path !== to.path)) && !to.path.startsWith('/redirect') && !to.path.startsWith('/login')){
     if(!loadDynamicComponent){
       loadDynamicComponent = true
-      const loading = ElLoading.service({
-        lock: true,
-        background: 'rgba(255, 255, 255, 0)',
-      })
+      // const loading = ElLoading.service({
+      //   lock: true,
+      //   background: 'rgba(255, 255, 255, 0)',
+      // })
       await app.config.globalProperties.$post('/system/component/list').then((res) => {
         res.data.forEach(it => {
           global.dynamicComponentNames.push(it.name)
           appComponent(app, it)
         })
-        loading.close()
+        // loading.close()
       })
     }
     global.visitedViews.push(to)
@@ -47,9 +58,6 @@ router.beforeEach(async (to, from) => {
 })
 app.use(hasPermission)
 app.use(components)
-app.use(ElementPlus, {
-  // size: 'small',
-  locale: zhCn
-})
+app.use(Antd)
 app.use(router)
 app.mount('#app')

@@ -9,56 +9,85 @@
       item-key="id"
     >
       <template #item="{ element }">
+      
         <div
-          class="draggable-item"
+          v-if="urls.length>0 "
           :style="{ width: width + 'px', height: height + 'px' }"
+          class="draggable-item"
         >
-          <el-image
-            :src="$global.baseApi + element"
-            :preview-src-list="[$global.baseApi + element]"
+        <!-- 
+
+          :style="{ width: width + 'px', height: height + 'px' }"
+          <span>{{element.response.data.url}}</span> 
+          
+          
+          -->
+          <a-image
+            v-if=" element.status=='done' && element.response && element.response.code==200"
+            :width="width"
+            :height="height"
+            :src="$global.baseApi + element.response.data.url"
+            :preview="false"
+            :fallback="(e)=>{
+              console.log('*************e:{}',e);
+            }"
           />
+          <!-- 
+             v-if="element.response && element.response.code==200"
+            :src="$global.baseApi + element.response.data.url"
+            :preview-src-list="[$global.baseApi + element]"
+           -->
           <div class="tools">
             <div class="shadow" @click="handleRemove(element)">
-              <el-icon>
-                <ElIconDelete />
-              </el-icon>
+              <a-icon>
+                <ElIconDeleteOutlined />
+              </a-icon>
             </div>
             <div class="shadow" @click="beforeCropper(element)">
-              <el-icon>
-                <ElIconScissor />
-              </el-icon>
+              <a-icon>
+                <ElIconScissorOutlined />
+              </a-icon>
             </div>
           </div>
         </div>
       </template>
       <template #footer>
-        <el-upload
-          v-if="(!multiple && urls.length == 0) || (multiple && urls.length < limit)"
+        <a-upload
+          v-show="(!multiple && urls.length == 0) || (multiple && urls.length < limit)"
           ref="uploadRef"
           class="uploadBox"
-          :style="{ width: width + 'px', height: height + 'px' }"
           :action="action"
           v-bind="uploadDynamicProps"
           :headers="headers"
+          :withCredentials="true"
           accept=".jpg,.jpeg,.png,.gif"
-          :show-file-list="false"
+          :show-upload-list="false"
           :multiple="multiple"
-          :limit="limit"
-          :on-success="handleAvatarSuccess"
-          :on-exceed="onExceed"
+          :maxCount="limit"
+          list-type="picture-card"
+          v-model:file-list="urls"
+          supportServerRender="false"
+          @change="changeValue"
         >
-          <el-icon class="uploadIcon">
-            <ElIconPlus />
+
+        <!--  
+          :limit="limit"
+          :style="{ width: width + 'px', height: height + 'px' }"  
+           :on-success="handleAvatarSuccess"
+          :on-exceed="onExceed"
+          -->
+          <icon class="uploadIcon">
+            <ElIconPlusOutlined />
             <span v-show="isUploading" class="uploading">正在上传...</span>
             <span
               v-if="!isUploading && limit && limit!==99 && multiple"
               class="limitTxt"
             >最多{{ limit }}张</span>
-          </el-icon>
-        </el-upload>
+          </icon>
+        </a-upload>
       </template>
     </vuedraggable>
-    <div v-if="tip" class="el-upload__tip" :style="{ color: tipColor }">{{ tip }}</div>
+    <div v-if="tip" class="a-upload__tip" :style="{ color: tipColor }">{{ tip }}</div>
     <mb-dialog ref="cropperDialog" @confirm-click="cropper">
       <template #content>
         <div class="cropper-content">
@@ -141,7 +170,7 @@ export default {
   },
   data() {
     return {
-      action: import.meta.env.VITE_APP_BASE_API + '/system/file/upload',
+      action: import.meta.env.VITE_APP_BASE_API + 'system/file/upload',
       headers: {
         token: getToken()
       },
@@ -171,7 +200,7 @@ export default {
     this.cropperOption = this.cropperConfig || {}
     this.cropperOption.img = ''
     if (this.externalId) {
-      this.$get('/system/file/files', { externalId: this.externalId, externalType: this.externalType }).then(res => {
+      this.$get('system/file/files', { externalId: this.externalId, externalType: this.externalType }).then(res => {
         this.urls = res.data
       })
       this.action = this.action + `?externalId=${this.externalId}&externalType=${this.externalType}`
@@ -252,6 +281,7 @@ export default {
       this.urls.forEach(url => {
         newUrls.push(encodeURI(url))
       })
+      console.log('*********newUrls****:{}',newUrls);
       this.$get('/system/file/resort', { urls: newUrls.join(',') })
     },
     onExceed() {
@@ -260,12 +290,17 @@ export default {
         message: `图片超限，最多可上传${this.limit}张图片`
       })
     },
-    beforeCropper(url) {
-      this.cropperOption.img = this.$global.baseApi + url
-      this.cropperOption.relativeImg = url
-      this.$refs.cropperDialog.show()
+    beforeCropper(element) {
+      console.log('*************url:::cropperOption:{}:::{}',element,this.cropperOption.img);
+      if(element.response){
+        const url = element.response.data.url;
+        this.cropperOption.img = this.$global.baseApi + url
+        this.cropperOption.relativeImg = url
+        this.$refs.cropperDialog.show()
+      }
     },
-    cropper() {
+    cropper(e) {
+       console.log('*************cropper执行了:{}',e);
       this.$refs.cropper.getCropBlob((data) => {
         var dataFile = new File([data], this.cropperOption.relativeImg.substring(this.cropperOption.relativeImg.lastIndexOf('/') + 1), { type: data.type, lastModified: Date.now() })
         var formData = new FormData()
@@ -276,25 +311,49 @@ export default {
           method: 'post',
           data: formData
         }).then(res => {
+          console.log('*******************this.urls::{}:::{}',this.urls);
           this.urls.forEach((it, i) => {
+            console.log('*******************it::{}:::{}',it,i);
             if (this.cropperOption.img.indexOf(it) !== -1) {
+              
               this.urls[i] = res.data.url
               this.$refs.cropperDialog.hide()
             }
           })
         })
       })
+    },
+    changeValue(obj){
+      console.log('***********obj**:{}', obj);
+      if(obj.file.status=='done'){
+        if(this.join){
+          console.log('*************:{}', this.urls);
+          console.log('*************:{}',  this.urls.join(','));
+           this.$emit('change', this.urls.filter(p=>p.status =='done').map(p=>p.response.data.url).join(',')) ;
+           this.$emit('update:modelValue', this.urls.filter(p=>p.status =='done').map(p=>p.response.data.url).join(',')) ;
+        }else{
+           this.$emit('change', this.urls) ;
+           this.$emit('update:modelValue', this.urls) ;
+        }
+      }
     }
   }
 }
 </script>
 
 <style scoped>
-.vue-draggable >>> .el-upload {
+.vue-draggable :deep(.ant-upload) {
   width: 100%;
   height: 100%;
   display: block;
 }
+
+
+ .uploadBox :deep(.ant-upload){
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+  }
 </style>
 
 <style lang="scss" scoped>
@@ -312,8 +371,7 @@ export default {
   font-size: 20px;
   color: #999;
 
-  .limitTxt,
-  .uploading {
+  .limitTxt, .uploading {
     position: absolute;
     bottom: 10%;
     left: 0;
@@ -335,7 +393,7 @@ export default {
     position: relative;
     overflow: hidden;
 
-    .el-image {
+    .ant-image {
       width: 100%;
       height: 100%;
     }
@@ -382,14 +440,18 @@ export default {
     .uploadBox {
       display: none;
     }
+   
   }
 }
+
+
+
 // el-image
-.el-image-viewer__wrapper {
-  .el-image-viewer__mask {
+.ant-image-viewer__wrapper {
+  .ant-image-viewer__mask {
     opacity: .8;
   }
-  .el-icon-circle-close {
+  .ant-icon-circle-close {
     color: #fff;
   }
 }

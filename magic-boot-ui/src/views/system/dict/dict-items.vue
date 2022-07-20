@@ -3,42 +3,43 @@
 
     <mb-search :where="tableOptions.where" @search="reloadTable" not-reset="dictId" />
 
-    <el-row class="toolbar-container">
-      <el-button v-permission="'dict:items:save'" class="filter-item" type="primary" icon="ElIconEdit" @click="handleCreate">
+    <a-row class="toolbar-container">
+      <a-button v-permission="'dict:items:save'" class="filter-item" type="primary"  @click="handleCreate">
+        <template #icon><ElIconPlusOutlined /></template>
         添加
-      </el-button>
-    </el-row>
+      </a-button>
+    </a-row>
 
     <mb-table ref="table" v-bind="tableOptions" />
 
     <mb-dialog ref="formDialog" :title="dialogTitle" width="640px" @confirm-click="save($event)">
       <template #content>
-        <el-form ref="dataForm" :inline="true" :rules="rules" :model="temp" label-position="right" label-width="80px">
-          <el-row :gutter="24">
-            <el-col :span="12">
-              <el-form-item label="标签名" prop="label">
-                <el-input v-model="temp.label" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="值" prop="value">
-                <el-input v-model="temp.value" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="24">
-            <el-col :span="12">
-              <el-form-item label="排序" prop="sort">
-                <el-input v-model="temp.sort" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="备注" prop="remarks">
-                <el-input v-model="temp.remarks" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
+        <a-form ref="dataForm" layout="inline" :rules="rules" :model="temp" label-position="right" label-width="80px">
+          <a-row :gutter="24">
+            <a-col :span="12">
+              <a-form-item label="标签名" name="label">
+                <a-input v-model:value="temp.label" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="值" name="value">
+                <a-input v-model:value="temp.value" />
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="24">
+            <a-col :span="12">
+              <a-form-item label="排序" name="sort">
+                <a-input v-model:value="temp.sort" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="备注" name="remarks">
+                <a-input v-model:value="temp.remarks" />
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form>
       </template>
     </mb-dialog>
 
@@ -132,7 +133,7 @@ const tableOptions = reactive({
           permission: 'dict:items:save',
           label: '修改',
           type: 'text',
-          icon: 'ElIconEdit',
+          icon: 'ElIconEditOutlined',
           click: (row) => {
             handleUpdate(row)
           }
@@ -141,7 +142,7 @@ const tableOptions = reactive({
           permission: 'dict:items:delete',
           label: '删除',
           type: 'text',
-          icon: 'ElIconDelete',
+          icon: 'ElIconDeleteOutlined',
           click: (row) => {
             proxy.$common.handleDelete({
               url: '/system/dict/items/delete',
@@ -159,9 +160,9 @@ const tableOptions = reactive({
 })
 const dialogTitle = ref('')
 const rules = reactive({
-  value: [{ required: true, message: '请输入值', trigger: 'change' }],
-  label: [{ required: true, message: '请输入标签名', trigger: 'change' }],
-  sort: [{ required: true, message: '请输入排序', trigger: 'change' }]
+  value: [{ required: true, message: '请输入值', trigger: 'blur' }],
+  label: [{ required: true, message: '请输入标签名', trigger: 'blur' }],
+  sort: [{ required: true, message: '请输入排序', trigger: 'blur' }]
 })
 const temp = ref(getTemp())
 const table = ref()
@@ -200,7 +201,7 @@ function handleCreate() {
 }
 
 function save(d) {
-  dataForm.value.validate((valid) => {
+  dataForm.value.validate().then((valid) => {
     if (valid) {
       d.loading()
       proxy.$post('/system/dict/items/save', temp.value).then(() => {

@@ -1,16 +1,19 @@
 <template>
-  <el-button
+  <a-button
     v-bind="props_"
     :plain="plain"
     @click="buttonClick"
   >
-    {{ props_.text }}
-  </el-button>
+   <template #icon>
+      <component v-if="icon" :is="icon" />
+   </template>
+    {{ props_.text}}
+  </a-button>
 </template>
 
 <script>
 import { getToken } from '@/scripts/auth'
-import {ElNotification} from "element-plus";
+// import {ElNotification} from "element-plus";
 
 export default {
   name: 'MbButton',
@@ -62,7 +65,11 @@ export default {
     isOpen: {
       type: Boolean,
       default: false
-    }
+    },
+    icon: {
+      type: String,
+      default: ''
+    },
   },
   data() {
     return {
@@ -70,7 +77,8 @@ export default {
       requestMethod_: this.requestMethod,
       beforeConfirm_: this.beforeConfirm,
       successTips_: this.successTips,
-      failTips_: this.failTips
+      failTips_: this.failTips,
+      icon:this.icon
     }
   },
   created() {
@@ -79,7 +87,7 @@ export default {
         this.requestMethod_ = 'delete'
         this.props_.type = 'danger'
         this.props_.text = '删除'
-        this.props_.icon = 'ElIconDelete'
+        this.icon = 'ElIconDeleteOutlined'
         this.beforeConfirm_ = '此操作将永久删除该数据, 是否继续?'
         this.successTips_ = '删除成功！'
         this.failTips_ = '删除失败！'
@@ -123,12 +131,12 @@ export default {
         }).then(res => {
           const { data } = res
           if (data) {
-            ElNotification({
-              title: '成功',
-              message: this.successTips_,
-              type: 'success',
-              duration: 2000
-            })
+            // ElNotification({
+            //   title: '成功',
+            //   message: this.successTips_,
+            //   type: 'success',
+            //   duration: 2000
+            // })
           } else {
             this.$message.error(this.failTips_)
           }

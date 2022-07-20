@@ -1,8 +1,8 @@
 <template>
   <div style="padding: 50px;">
     <h2>多选</h2>
-    <el-button type="primary" @click="getData" style="margin-bottom: 10px">获取数据</el-button>
-    <mb-select v-model="dictType" type="dict_type" multiple />
+    <a-button type="primary" @click="getData" style="margin-bottom: 10px">获取数据</a-button>
+    <mb-select v-model:value="dictType" type="dict_type" multiple />
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
-  <el-dialog
-    v-model="dialogVisible"
+  <a-modal
+    v-model:visible="dialogVisible"
     :custom-class="customClass"
     :fullscreen="fullscreen"
     :width="width"
@@ -11,22 +11,22 @@
     draggable
     @open="$emit('open')"
     @opened="opened"
-    @close="$emit('close')"
+    @afterClose="$emit('close')"
   >
     <slot name="content" />
     <template v-if="showFooter" #footer>
       <div slot="footer" class="dialog-footer">
         <slot name="btns">
-          <el-button @click="hide">
+          <a-button @click="hide">
             关闭
-          </el-button>
-          <el-button type="primary" :loading="confirmLoading" @click="confirmClick">
+          </a-button>
+          <a-button type="primary" :loading="confirmLoading" @click="confirmClick">
             确认
-          </el-button>
+          </a-button>
         </slot>
       </div>
     </template>
-  </el-dialog>
+  </a-modal>
 </template>
 
 <script>
@@ -112,7 +112,7 @@ export default {
           margin-top: 0vh;
           margin-bottom: 0vh;
         }
-        .${cc} .el-dialog__body{
+        .${cc} .a-dialog__body{
           max-height: 100vh;
         }
       `
@@ -122,7 +122,7 @@ export default {
           margin-top: 10vh;
           margin-bottom: 10vh;
         }
-        .${cc} .el-dialog__body{
+        .${cc} .a-dialog__body{
           max-height: 60vh;
           overflow: auto;
         }

@@ -1,5 +1,5 @@
 <template>
-  <el-upload
+  <a-upload
     :id="uploadDomId"
     class="upload-demo"
     ref="uploadRef"
@@ -16,9 +16,14 @@
     :before-upload="beforeAvatarUpload"
     :on-success="handleAvatarSuccess"
   >
-    <el-button type="primary" icon="ElIconUploadFilled" :loading="uploadLoading" :disabled="!multiple && fileList.length == 1">{{ label }}</el-button>
+    <a-button type="primary"  :loading="uploadLoading" :disabled="!multiple && fileList.length == 1">
+      <template #icon>
+        <ElIconCloudUploadOutlined />
+      </template>
+      {{ label }}
+    </a-button>
     <div slot="tip" v-if="showTip" class="el-upload__tip">支持上传{{ getSettingSuffixs().replaceAll(',', '，') }}文件，且不超过{{ maxFileSize }}MB</div>
-  </el-upload>
+  </a-upload>
 </template>
 
 <script>
@@ -184,7 +189,7 @@ export default {
           this.$emit('change', this.urls)
         }
       } else {
-        document.getElementById(this.uploadDomId).getElementsByClassName('el-upload__input')[0].removeAttribute('disabled')
+        document.getElementById(this.uploadDomId).getElementsByClassName('a-upload__input')[0].removeAttribute('disabled')
         this.$emit('update:modelValue', '')
         this.$emit('change', '')
       }
@@ -215,7 +220,7 @@ export default {
             this.$emit('change', this.urls)
           }
         } else {
-          document.getElementById(this.uploadDomId).getElementsByClassName('el-upload__input')[0].setAttribute('disabled', '')
+          document.getElementById(this.uploadDomId).getElementsByClassName('a-upload__input')[0].setAttribute('disabled', '')
           this.$emit('update:modelValue', res.data.url)
           this.$emit('change', res.data.url)
         }
@@ -291,7 +296,7 @@ export default {
 </script>
 
 <style scoped>
-  :deep(.el-upload){
+  :deep(.ant-upload){
     display: block;
   }
 </style>

@@ -1,16 +1,20 @@
 <template>
   <div :class="{'hidden':hidden}" class="pagination-container">
-    <el-pagination
+    <a-pagination
       :background="background"
-      v-model:current-page="currentPage"
+      v-model:current="currentPage"
       v-model:page-size="pageSize"
-      :layout="layout"
-      :page-sizes="pageSizes"
       :total="total"
       v-bind="$attrs"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
+      @change="handleCurrentChange"
+       :show-total="total => `共 ${total} 条`"
     />
+
+    <!--  
+      :layout="layout"
+      :page-sizes="pageSizes"
+      handleCurrentChange
+      -->
   </div>
 </template>
 
@@ -57,6 +61,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:page', 'update:limit', 'pagination'])
 
+
 const currentPage = computed({
   get: () => props.page,
   set: (val) => {
@@ -71,15 +76,15 @@ const pageSize = computed({
   }
 })
 
-function handleSizeChange(val) {
-  emit('pagination', { page: currentPage, limit: val })
-  if (props.autoScroll) {
-    scrollTo(0, 800)
-  }
-}
+// function handleSizeChange(val) {
+//   emit('pagination', { page: currentPage, limit: val })
+//   if (props.autoScroll) {
+//     scrollTo(0, 800)
+//   }
+// }
 
-function handleCurrentChange(val) {
-  emit('pagination', { page: val, limit: pageSize })
+function handleCurrentChange(page, pageSize) {
+  emit('pagination', { page: page, limit: pageSize })
   if (props.autoScroll) {
     scrollTo(0, 800)
   }

@@ -1,75 +1,75 @@
 <style>
-.el-input-number .el-input__inner{
+.ant-input .ant-input{
   text-align: left;
 }
 </style>
 
 <template>
-  <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px">
-    <el-row :gutter="24">
-      <el-col :span="12">
-        <el-form-item label="菜单类型" prop="type">
-          <el-radio-group v-model="menuType">
-            <el-radio-button label="menu">菜单</el-radio-button>
-            <el-radio-button label="button">按钮</el-radio-button>
-          </el-radio-group>
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="上级菜单" prop="pid">
-          <el-tree-select v-model="temp.pid" :data="menuTree" :key="temp.pid" style="width: 100%" check-strictly />
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <el-form-item label="菜单名称" prop="name">
-      <el-input v-model="temp.name" />
-    </el-form-item>
-    <el-form-item label="菜单链接" prop="url" v-if="menuType == 'menu'">
-      <el-input v-model="temp.url" />
-    </el-form-item>
-    <el-form-item label="关联组件" prop="componentName" v-if="menuType == 'menu'">
-      <el-tree-select v-model="temp.componentName" :data="componentTree" :key="temp.componentName" clearable style="width: 100%" placeholder=" " />
-    </el-form-item>
-    <el-form-item label="权限标识" prop="permission" v-if="menuType == 'button'">
-      <el-input v-model="temp.permission" />
-    </el-form-item>
-    <el-row :gutter="24">
-      <el-col :span="6">
-        <el-form-item label="排序" prop="sort">
-          <el-input-number v-model="temp.sort" controls-position="right" />
-        </el-form-item>
-      </el-col>
-      <el-col :span="6">
-        <el-form-item label="选择图标" prop="icon" v-if="menuType == 'menu'">
+  <a-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px">
+    <a-row :gutter="24">
+      <a-col :span="12">
+        <a-form-item label="菜单类型" name="type">
+          <a-radio-group v-model:value="menuType">
+            <a-radio-button value="menu">菜单</a-radio-button>
+            <a-radio-button value="button">按钮</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+      </a-col>
+      <a-col :span="12">
+        <a-form-item label="上级菜单" name="pid">
+          <a-tree-select v-model:value="temp.pid" :tree-data="menuTree" :key="temp.pid" style="width: 100%" check-strictly />
+        </a-form-item>
+      </a-col>
+    </a-row>
+    <a-form-item label="菜单名称" name="name">
+      <a-input v-model:value="temp.name" />
+    </a-form-item>
+    <a-form-item label="菜单链接" name="url" v-if="menuType == 'menu'">
+      <a-input v-model:value="temp.url" />
+    </a-form-item>
+    <a-form-item label="关联组件" name="componentName" v-if="menuType == 'menu'">
+      <a-tree-select v-model:value="temp.componentName" :tree-data="componentTree" :key="temp.componentName" allow-clear style="width: 100%" placeholder=" " />
+    </a-form-item>
+    <a-form-item label="权限标识" name="permission" v-if="menuType == 'button'">
+      <a-input v-model:value="temp.permission" />
+    </a-form-item>
+    <a-row :gutter="24">
+      <a-col :span="6">
+        <a-form-item label="排序" name="sort">
+          <a-input-number v-model:value="temp.sort" controls-position="right" />
+        </a-form-item>
+      </a-col>
+      <a-col :span="6">
+        <a-form-item label="选择图标" name="icon" v-if="menuType == 'menu'">
           <a @click="openIcons">
-            <el-input v-model="temp.icon" class="input-with-select">
-              <template #append>
-                <el-button style="height:32px;">
+            <a-input-search v-model:value="temp.icon" class="input-with-select">
+              <template #enterButton>
+                <a-button style="height:32px;">
                   <mb-icon :icon="temp.icon" />
-                </el-button>
+                </a-button>
               </template>
-            </el-input>
+            </a-input-search>
           </a>
-        </el-form-item>
-      </el-col>
-      <el-col :span="6">
-        <el-form-item label="菜单显示" v-if="menuType == 'menu'">
-          <el-radio-group v-model="temp.isShow">
-            <el-radio-button label="1">显示</el-radio-button>
-            <el-radio-button label="0">不显示</el-radio-button>
-          </el-radio-group>
-        </el-form-item>
-      </el-col>
-      <el-col :span="6">
-        <el-form-item label="路由缓存" v-if="menuType == 'menu'">
-          <el-radio-group v-model="temp.keepAlive">
-            <el-radio-button label="1">缓存</el-radio-button>
-            <el-radio-button label="0">不缓存</el-radio-button>
-          </el-radio-group>
-        </el-form-item>
-      </el-col>
-    </el-row>
-  </el-form>
+        </a-form-item>
+      </a-col>
+      <a-col :span="6">
+        <a-form-item label="菜单显示" v-if="menuType == 'menu'">
+          <a-radio-group v-model:value="temp.isShow">
+            <a-radio-button :value="1">显示</a-radio-button>
+            <a-radio-button :value="0">不显示</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+      </a-col>
+      <a-col :span="6">
+        <a-form-item label="路由缓存" v-if="menuType == 'menu'">
+          <a-radio-group v-model:value="temp.keepAlive">
+            <a-radio-button :value="1">缓存</a-radio-button>
+            <a-radio-button :value="0">不缓存</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+      </a-col>
+    </a-row>
+  </a-form>
   <mb-dialog ref="iconDialog">
     <template #content>
       <menu-icons :select-icon="selectIcon" />
@@ -121,35 +121,37 @@ proxy.$get('/system/component/select').then(res => {
 
 const temp = ref(getTemp())
 
-var validateUrl = (rule, value, callback) => {
+var validateUrl = (rule, value,callback) => {
+  console.log('***********validateUrl:::{}');
   if(menuType.value == 'menu'){
     if(!value){
-      callback(new Error('请输入菜单链接'))
+      return Promise.reject(new Error('请输入菜单链接'))
     }else{
-      callback()
+      return Promise.resolve();
     }
   }else{
-    callback()
+    return Promise.resolve();
   }
 }
 
-var validatePermission = (rule, value, callback) => {
+var validatePermission = (rule, value,callback) => {
+   console.log('***********validatePermission:::{}');
   if(menuType.value == 'button'){
     if(!value){
-      callback(new Error('请输入权限标识'))
+      return Promise.reject(new Error('请输入权限标识'))
     }else{
-      callback()
+      return Promise.resolve();
     }
   }else{
-    callback()
+    return Promise.resolve();
   }
 }
 
 const rules = reactive({
-  pid: [{ required: true, message: '请选择上级菜单', trigger: 'change' }],
-  name: [{ required: true, message: '请输入菜单名称', trigger: 'change' }],
-  url: [{ required: true, trigger: 'change', validator: validateUrl }],
-  permission: [{ required: true, trigger: 'change', validator: validatePermission }]
+  pid: [{ required: true, message: '请选择上级菜单', trigger: 'blur' }],
+  name: [{ required: true, message: '请输入菜单名称', trigger: 'blur' }],
+  url: [{ required: true, trigger: 'blur', validator: validateUrl }],
+  permission: [{ required: true, trigger: 'blur', validator: validatePermission }]
 })
 
 watch(menuType, (type) => {
@@ -164,11 +166,13 @@ watch(menuType, (type) => {
 })
 
 function save(d) {
-  dataForm.value.validate((valid) => {
+  console.log('*********save********:{}',dataForm.value);
+  dataForm.value.validate().then((valid) => {
+    console.log('*****************11111');
     if (valid) {
       d.loading()
       if(temp.value.pid == temp.value.id){
-        this.$notify({
+        proxy.$notify({
           title: '失败',
           message: '上级菜单不能选当前菜单',
           type: 'error',
@@ -193,18 +197,23 @@ function save(d) {
         temp.value.icon = ''
         temp.value.url = ''
       }
+       console.log('*****************222222');
       proxy.$post('/system/menu/save', temp.value).then(() => {
+         console.log('*****************33333333333',d);
         d.hideLoading()
+         d.hide()
         proxy.$notify({
           title: '成功',
           message: d.title + '成功',
           type: 'success',
           duration: 2000
         })
-        d.hide()
+       
         emit('reload-table')
       }).catch(() => d.hideLoading())
     }
+  }).catch(e=>{
+    console.error('**********************************:{}',e);
   })
 }
 
@@ -219,6 +228,7 @@ function addSubMenu(id) {
   })
 }
 function getInfo(row) {
+  console.log('getInfo执行了**********:{}',row);
   for (var t in temp.value) {
     temp.value[t] = row[t]
   }
@@ -227,6 +237,7 @@ function getInfo(row) {
   nextTick(() => {
     dataForm.value.clearValidate()
   })
+  console.log('temp::::{}',temp);
 }
 
 function resetTemp() {

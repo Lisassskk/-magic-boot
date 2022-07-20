@@ -1,9 +1,9 @@
 import * as vue from "vue";
-import ElementPlus from "element-plus";
-
+// import ElementPlus from "element-plus";
+import * as Antd from "ant-design-vue";
 const libs = {
     vue,
-    'element-plus': ElementPlus
+    'ant-design-vue': Antd
 }
 
 window.___magic__import__ = function(lib, name){

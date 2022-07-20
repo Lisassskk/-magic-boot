@@ -83,7 +83,8 @@ function gen(groupPath, data){
                             icon: 'ElEdit',
                             click: (row) => {
                                 magicFormTitle.value = '修改'
-                                formDialog.value.show(() => magicForm.value.getDetail(row.id))
+                                formDialog.value.show();
+                                proxy.$nextTick(() => magicForm.value.getDetail(row.id))
                             }
                         }, {
                             permission: '${permissionPrefix}:delete',
@@ -135,7 +136,7 @@ function gen(groupPath, data){
                     messagePrefix = '请输入'
                 }
                 rules = `,
-                    rules: [{ required: true, message: '${messagePrefix}${d.columnComment.trim()}', trigger: 'change' }]`
+                    rules: [{ required: true, message: '${messagePrefix}${d.columnComment.trim()}', trigger: 'blur' }]`
             }
             html += `{
                     span: 12,

@@ -1,6 +1,6 @@
 <template>
-  <el-select v-model="selectValue" v-bind="props.props" :multiple="multiple" :style="{ width }" :placeholder="placeholder || (itemLabel && '请输入' + itemLabel)" filterable clearable>
-    <el-option
+  <a-select v-model:value="selectValue" v-bind="props.props" :mode="multiple?'multiple':false"  :style="{ width }" :placeholder="placeholder || (itemLabel && '请输入' + itemLabel)" filterable allowClear>
+    <a-select-option
       v-for="item in selectList"
       :key="item.value"
       :label="item.label"
@@ -8,8 +8,8 @@
     >
       <span style="float: left">{{ item.label }}</span>
       <span v-if="showValue" style="float: right;color: var(--el-text-color-secondary);font-size: 13px;">{{ item.value }}</span>
-    </el-option>
-  </el-select>
+    </a-select-option>
+  </a-select>
 </template>
 
 <script setup>
@@ -91,7 +91,7 @@ watch(() => props.modelValue, (value) => {
 })
 
 watch(selectValue, (value) => {
-  if(props.multiple && props.join){
+  if(props.multiple && props.join ){
     emit('update:modelValue', value.join(','))
     emit('change', value.join(','))
   }else{

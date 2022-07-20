@@ -1,4 +1,5 @@
-import * as PlusIcons from '@element-plus/icons-vue'
+import * as PlusIcons from '@ant-design/icons-vue'
+import { notification } from 'ant-design-vue';
 import request from './request'
 import global from './global'
 import common from './common'
@@ -22,6 +23,9 @@ const install = (app) => {
   app.config.globalProperties.$global = global
   app.config.globalProperties.$common = common
   app.config.globalProperties.$treeTable = treeTable
+
+  app.config.globalProperties.$notify = notification.open;
+
   for(var key in PlusIcons) {
     app.component(`ElIcon${key}`, PlusIcons[key])
   }

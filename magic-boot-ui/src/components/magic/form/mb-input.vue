@@ -1,5 +1,5 @@
 <template>
-  <el-input v-model="selectValue" :type="type" :placeholder="placeholder || (itemLabel && '请输入' + itemLabel)" v-bind="props.props" />
+  <a-input v-model:value="selectValue" :type="type" :placeholder="placeholder || (itemLabel && '请输入' + itemLabel)" v-bind="props.props" />
 </template>
 
 <script setup>

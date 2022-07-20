@@ -28,19 +28,21 @@
 
       <mb-search :where="tableOptions.where" @search="reloadTable">
         <template #btns>
-          <el-button class="filter-item" type="primary" icon="ElIconDownload" @click="table.exportExcel()">
+          <a-button class="filter-item" type="primary"  @click="table.exportExcel()">
+            <template #icon><ElIconDownloadOutlined/></template>
             导出
-          </el-button>
+          </a-button>
         </template>
       </mb-search>
 
-      <el-row class="toolbar-container">
-        <el-button v-permission="'user:save'" class="filter-item" type="primary" icon="ElIconEdit" @click="handleCreate">
+      <a-row class="toolbar-container">
+        <a-button v-permission="'user:save'" class="filter-item" type="primary"  @click="handleCreate">
+          <template #icon><ElIconPlusOutlined /></template>
           添加
-        </el-button>
+        </a-button>
         <mb-button v-permission="'user:delete'" plain :request-url="'/system/user/delete'" :btn-type="'delete'" :request-data="{ id: ids }" :after-handler="reloadTable" />
         <mb-upload-file ref="importUserRef" action="/system/user/import/preview" label="导入用户" :show-tip="false" :show-file-list="false" :show-remove-tip="false" :on-success="importUserSuccess" />
-      </el-row>
+      </a-row>
 
       <mb-table ref="table" v-bind="tableOptions" @selection-change="selectionChange" />
 
@@ -187,7 +189,7 @@ const tableOptions = reactive({
           permission: 'user:save',
           label: '修改',
           type: 'text',
-          icon: 'ElIconEdit',
+          icon: 'ElIconEditOutlined',
           click: (row) => {
             handleUpdate(row)
           }
@@ -196,7 +198,7 @@ const tableOptions = reactive({
           permission: 'user:delete',
           label: '删除',
           type: 'text',
-          icon: 'ElIconDelete',
+          icon: 'ElIconDeleteOutlined',
           if: (row) => {
             return row.id != '1'
           },

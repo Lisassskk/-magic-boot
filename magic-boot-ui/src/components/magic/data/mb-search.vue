@@ -1,26 +1,28 @@
 <template>
-  <div class="filter-container">
-    <el-form :inline="true" @keyup.enter="search">
-      <span v-for="(it, i) in where">
-        <el-form-item v-if="it && it.label" :label="it.label" :key="i">
+  <div class="filteron-ctainer">
+    <a-form layout="inline" @keyup.enter="search" >
+      <span v-for="(it, i) in where"  v-bind:key="'key:' + i">
+        <a-form-item v-if="it && it.label" :label="it.label" :key="i" >
           <component
-              :is="!it.component ? 'mb-input' : it.component.startsWith('el-') || $global.dynamicComponentNames.indexOf(it.component) != -1 ? it.component : 'mb-' + it.component"
-              v-model="it.value"
+              :is="!it.component ? 'mb-input' : it.component.startsWith('a-') || $global.dynamicComponentNames.indexOf(it.component) != -1 ? it.component : 'mb-' + it.component"
+              v-model:value="it.value"
               :item-label="it.label"
               v-bind="it.props"
           />
-        </el-form-item>
+        </a-form-item>
       </span>
-      <el-form-item>
-        <el-button class="filter-item" type="primary" icon="ElIconSearch" @click="search">
+      <a-form-item>
+        <a-button class="filter-item" type="primary"  @click="search">
+          <template #icon><ElIconSearchOutlined /></template>
           搜索
-        </el-button>
-        <el-button class="filter-item" icon="ElIconDelete" @click="reset">
+        </a-button>
+        <a-button class="filter-item"  @click="reset">
+          <template #icon><ElIconDeleteOutlined /></template>
           清空
-        </el-button>
+        </a-button>
         <slot name="btns" />
-      </el-form-item>
-    </el-form>
+      </a-form-item>
+    </a-form>
   </div>
 </template>
 

@@ -2,9 +2,10 @@
   <div class="app-container">
     <mb-search :where="tableOptions.where" @search="reloadTable">
       <template #btns>
-        <el-button class="filter-item" type="primary" icon="ElIconDownload" @click="table.exportExcel()">
+        <a-button class="filter-item" type="primary"  @click="table.exportExcel()">
+          <template #icon><ElIconDownloadOutlined/></template>
           导出
-        </el-button>
+        </a-button>
       </template>
     </mb-search>
     <mb-table ref="table" v-bind="tableOptions" />
@@ -37,14 +38,16 @@
         component: 'date',
         label: '创建时间',
         props: {
-          type: 'datetimerange'
+          type: 'datetimerange',
+          format: 'YYYY-MM-DD HH:mm:ss'
         }
       }
     },
     cols: [
       {
         field: 'apiName',
-        label: '接口名'
+        label: '接口名',
+        width: '15%'
       },
       {
         field: 'apiPath',

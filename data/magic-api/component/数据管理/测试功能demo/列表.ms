@@ -1,10 +1,10 @@
 {
   "properties" : { },
-  "id" : "b35e1c055131478d8ebabb7a64eb721d",
+  "id" : "42c3ecb7b28b4179a562140e3722f89a",
   "script" : null,
-  "groupId" : "eb5dbed949de4f50ba4bf59f483252a5",
+  "groupId" : "3442f636245e44a997d3af4db8a33ee9",
   "name" : "列表",
-  "createTime" : 1649260172031,
+  "createTime" : 1658317155501,
   "updateTime" : null,
   "lock" : null,
   "createBy" : null,
@@ -31,42 +31,52 @@
     const listOptions = reactive({
         tools: [{
             type: 'add',
-            permission: 'data:test:save',
+            permission: 'data:testdemo:save',
             click: () => {
                 magicFormTitle.value = '添加'
                 formDialog.value.show()
             }
         }],
         table: {
-            url: '/data/test/list',
+            url: '/data/testdemo/list',
             where: {
-                name: {
-                    label: '名字'
+                descRibe: {
+                    label: '描述',
+                    component: 'input',
+                    props: {
+                        type: 'textarea'
+                    }
+      
                 },
-                sex: {
-                    label: '性别'
+                dictType: {
+                    label: '字典类型',
+                    component: 'select',
+                    props: {
+                        type: 'dict_type'
+                    }
                 },
-                headPortrait: {
-                    label: '头像'
+                type: {
+                    label: '类型',
+                    component: 'input'
                 },
                 remarks: {
-                    label: '备注'
+                    label: '备注',
+                    component: 'input'
                 }
             },
             cols: [
                 {
-                    field: 'name',
-                    label: '名字'
+                    field: 'descRibe',
+                    label: '描述'
                 },
                 {
-                    field: 'sex',
-                    label: '性别',
-                    dictType: 'sex'
+                    field: 'dictType',
+                    label: '字典类型',
+                    dictType: 'dict_type'
                 },
                 {
-                    field: 'headPortrait',
-                    label: '头像',
-                    type: 'image'
+                    field: 'type',
+                    label: '类型'
                 },
                 {
                     field: 'remarks',
@@ -78,22 +88,23 @@
                     fixed: 'right',
                     btns: [
                         {
-                            permission: 'data:test:save',
+                            permission: 'data:testdemo:save',
                             label: '修改',
                             type: 'text',
                             icon: 'ElEdit',
                             click: (row) => {
                                 magicFormTitle.value = '修改'
-                                formDialog.value.show(() => magicForm.value.getDetail(row.id))
+                                formDialog.value.show();
+                                proxy.$nextTick(() => magicForm.value.getDetail(row.id))
                             }
                         }, {
-                            permission: 'data:test:delete',
+                            permission: 'data:testdemo:delete',
                             label: '删除',
                             type: 'text',
                             icon: 'ElDelete',
                             click: (row) => {
                                 proxy.$common.handleDelete({
-                                    url: '/data/test/delete',
+                                    url: '/data/testdemo/delete',
                                     id: row.id,
                                     done: () => magicList.value.reload()
                                 })
@@ -108,44 +119,43 @@
     const formOptions = reactive({
         detail: {
             request: {
-              url: '/data/test/get'
+              url: '/data/testdemo/get'
             }
         },
         form: {
             request: {
-                url: "/data/test/save"
+                url: "/data/testdemo/save"
             },
             rows: [{
                 gutter: 24,
                 cols: [{
                     span: 12,
-                    name: 'name',
-                    label: '名字',
-                    component: 'input',
-                    rules: [{ required: true, message: '请输入名字', trigger: 'change' }]
-                },{
-                    span: 12,
-                    name: 'sex',
-                    label: '性别',
-                    component: 'radio-group',
-                    props: {
-                        type: 'sex'
-                    }
-                },{
-                    span: 12,
-                    name: 'headPortrait',
-                    label: '头像',
-                    component: 'upload-image',
-                    rules: [{ required: true, message: '请选择头像', trigger: 'change' }]
-                },{
-                    span: 12,
-                    name: 'remarks',
-                    label: '备注',
+                    name: 'descRibe',
+                    label: '描述',
                     component: 'input',
                     props: {
                         type: 'textarea'
                     }
       
+                },{
+                    span: 12,
+                    name: 'dictType',
+                    label: '字典类型',
+                    component: 'select',
+                    props: {
+                        type: 'dict_type'
+                    }
+                },{
+                    span: 12,
+                    name: 'type',
+                    label: '类型',
+                    component: 'input',
+                    rules: [{ required: true, message: '请输入类型', trigger: 'blur' }]
+                },{
+                    span: 12,
+                    name: 'remarks',
+                    label: '备注',
+                    component: 'input'
                 }]
             }]
         }

@@ -1,6 +1,6 @@
 @font-face {
   font-family: PoetsenOne;
-  src: url(../fonts/PoetsenOne.woff2) format('woff2');
+  src: url(@/assets/fonts/PoetsenOne.woff2) format('woff2');
   font-weight: 100;
   font-style: normal;
 }
@@ -30,15 +30,15 @@ body{
   --mb-avatar-text-size: 18px;
   /*--mb-menu-item-height: 50px;*/
 }
-.el-header{
-  --el-header-height: var(--mb-header-height);
+.a-header{
+  --a-header-height: var(--mb-header-height);
 }
-.el-avatar{
-  --el-avatar-text-size: var(--mb-avatar-text-size);
-  --el-avatar-bg-color: var(--mb-main-color);
+.a-avatar{
+  --a-avatar-text-size: var(--mb-avatar-text-size);
+  --a-avatar-bg-color: var(--mb-main-color);
   border: 1px solid white;
 }
-.el-dialog__body{
+.a-modal__body{
   padding: 5px 20px;
 }
 /*.el-sub-menu__title, .el-menu-item{*/
@@ -48,16 +48,31 @@ body{
   border: none;
   height: 1px;
   background: #F3F3F3;
+  margin: 18px;
 }
+.app-container {
+  /* margin: 18px; */
+}
+.filter-container{
+  margin-bottom: 10px
+}
+
 .toolbar-container{
   margin-bottom: 10px
 }
-.toolbar-container > div,
-.toolbar-container > button{
+.toolbar-container  div,
+.toolbar-container  button{
+  margin-top: 5px;
   margin-left: 12px;
 }
-.toolbar-container > div:nth-child(1),
-.toolbar-container > button:nth-child(1){
+.ant-form-inline .ant-form-item{
+  margin-bottom: 12px
+}
+.ant-form-item  button{
+  margin-left: 12px;
+}
+.toolbar-container  div:nth-child(1),
+.toolbar-container  button:nth-child(1){
   margin-left: 0px;
 }
 .clear{
@@ -65,4 +80,12 @@ body{
 }
 a{
   text-decoration: none;
+}
+
+ .ant-menu-item-selected span{
+  color: #1890ff !important;
+}
+
+.ant-tabs-tab-active{
+  color: #1890ff !important;
 }

@@ -1,5 +1,5 @@
 <template>
-  <el-table-column
+  <a-table-column
     v-bind="col.props"
     :key="col.field"
     :label="col.label"
@@ -16,7 +16,7 @@
       </span>
       <slot v-else-if="col.type == 'dynamic'" :name="col.field" :row="scope.row" :index="scope.$index" />
       <div v-else-if="col.type == 'switch'">
-        <el-switch
+        <a-switch
             v-if="col.if === undefined ? true : col.if(scope.row)"
             v-model="scope.row[col.field]"
             :active-value="col.activeValue || 1"
@@ -26,12 +26,12 @@
       </div>
       <div v-else-if="col.type == 'btns'">
         <template v-for="btn in col.btns">
-          <el-button v-if="btn.if === undefined ? true : btn.if(scope.row)" :icon="btn.icon" :key="btn.label" v-permission="btn.permission" :type="btn.type" :size="btn.size || 'small'" :class="btn.class" @click="btn.click(scope.row, scope.$index)">
+          <a-button v-if="btn.if === undefined ? true : btn.if(scope.row)" :icon="btn.icon" :key="btn.label" v-permission="btn.permission" :type="btn.type" :size="btn.size || 'small'" :class="btn.class" @click="btn.click(scope.row, scope.$index)">
             {{ btn.label }}
-          </el-button>
+          </a-button>
         </template>
       </div>
-      <el-image
+      <a-image
         v-else-if="col.type === 'image'"
         :src="scope.row[col.field].startsWith('http') ? scope.row[col.field] : $global.baseApi + scope.row[col.field]"
         :preview-src-list="[scope.row[col.field].startsWith('http') ? scope.row[col.field] : $global.baseApi + scope.row[col.field]]"
@@ -47,7 +47,7 @@
         <slot :row="row" :index="index" :name="key" />
       </template>
     </mb-table-column>
-  </el-table-column>
+  </a-table-column>
 </template>
 
 <script setup>

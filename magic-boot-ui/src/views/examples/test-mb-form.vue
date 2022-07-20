@@ -1,6 +1,6 @@
 <template>
   <mb-form ref="magicForm" v-bind="formOptions" />
-  <el-button @click="getFormData">获取表单数据</el-button>
+  <a-button @click="getFormData">获取表单数据</a-button>
 </template>
 
 <script setup>
@@ -19,7 +19,7 @@ const formOptions = reactive({
         span: 12,
         name: 'input',
         label: 'input',
-        rules: [{ required: true, message: '请输入input', trigger: 'change' }]
+        rules: [{ required: true, message: '请输入input', trigger: 'blur' }]
       },{
         span: 12,
         name: 'switch',
@@ -93,6 +93,7 @@ const formOptions = reactive({
         name: 'datetimerange',
         component: 'date',
         label: 'datetimerange',
+        format: 'YYYY-MM-DD HH:mm:ss',
         props: {
           type: 'datetimerange',
           format: 'YYYY-MM-DD HH:mm:ss'
@@ -102,27 +103,28 @@ const formOptions = reactive({
         span: 12,
         name: 'treeselect',
         label: 'treeselect',
-        rules: [{ required: true, message: '请选择组织机构', trigger: 'change' }],
+        rules: [{ required: true, message: '请选择组织机构', trigger: 'blur' }],
         props: {
-          url: '/system/user/offices'
+          url: '/system/user/offices',
+          allowClear:true
         }
       }, {
         component: 'select',
         span: 12,
         name: 'select',
         label: 'select',
-        rules: [{ required: true, message: '请选择角色', trigger: 'change' }],
+        rules: [{ required: true, message: '请选择角色', trigger: 'blur' }],
         props: {
           url: '/system/role/all',
           placeholder: '请选择角色',
-          multiple: true
+          multiple: false
         }
       },{
         span: 12,
         name: 'head',
         component: 'upload-image',
         label: '头像',
-        rules: [{ required: true, message: '请选择头像', trigger: 'change' }]
+        rules: [{ required: true, message: '请选择头像', trigger: 'blur' }]
       },{
         span: 12,
         name: 'heads',
@@ -131,7 +133,7 @@ const formOptions = reactive({
         props: {
           multiple: true
         },
-        rules: [{ required: true, message: '请选择头像', trigger: 'change' }]
+        rules: [{ required: true, message: '请选择头像', trigger: 'blur' }]
       }]
     }]
   }

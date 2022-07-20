@@ -1,21 +1,28 @@
 <template>
-  <el-checkbox-group
-    v-model="selectValue"
+  <a-checkbox-group
+    v-model:value="selectValue"
     :size="size"
     :disabled="disabled"
-    :min="min"
-    :max="max"
-    :text-color="textColor"
-    :fill="fill"
     @change="change"
   >
-    <el-checkbox-button v-if="button" v-for="it in checkboxOptions" v-bind="it" :label="it[valueField]">
+    <!-- <el-checkbox-button v-if="button" v-for="it in checkboxOptions" v-bind="it" :label="it[valueField]">
       {{ it[labelField] }}
-    </el-checkbox-button>
-    <el-checkbox v-if="!button" v-for="it in checkboxOptions" v-bind="it" :label="it[valueField]">
+      :fill="fill"
+    </el-checkbox-button> -->
+    <template v-for="it in checkboxOptions">
+      <a-checkbox v-if="!button" v-bind:key="it[valueField]"   :value="it[valueField]">
+        {{ it[labelField] }}
+      </a-checkbox>
+
+      <a-checkbox v-if="button" v-bind:key="it[valueField]"   :value="it[valueField]">
       {{ it[labelField] }}
-    </el-checkbox>
-  </el-checkbox-group>
+        <!-- <template #default >
+          <a-button>{{ it[labelField] }}</a-button>
+        </template> -->
+      </a-checkbox>
+    </template>
+    
+  </a-checkbox-group>
 </template>
 
 <script setup>
@@ -111,11 +118,13 @@
     }else if(props.url){
       if(props.method.toLowerCase() == 'post'){
         proxy.$post(props.url, props.data).then(res => {
+          console.log('res.data：：qq：{}',res.data);
           checkboxOptions.value = res.data.list || res.data
           setValue(props.modelValue)
         })
       }else{
         proxy.$get(props.url, props.data).then(res => {
+          console.log('res.data：：：{}',res.data);
           checkboxOptions.value = res.data.list || res.data
           setValue(props.modelValue)
         })

@@ -2,27 +2,32 @@
   <div class="app-container">
 
     <div class="filter-container">
-      <el-form :inline="true">
-        <el-form-item label="菜单搜索">
-          <el-input v-model="searchValue" @input="searchMenu" placeholder="菜单名称、链接、权限标识" style="width: 200px"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button class="filter-item" type="primary" icon="ElIconSearch" @click="searchMenu">
+      <a-form layout="inline" >
+        <a-form-item label="菜单搜索" >
+          <a-input v-model:value="searchValue" @input="searchMenu" placeholder="菜单名称、链接、权限标识" style="width: 200px" />
+        </a-form-item>
+        <a-form-item >
+           <a-button class="filter-item" type="primary"  @click="searchMenu">
+            <template #icon><ElIconSearchOutlined /></template>
             搜索
-          </el-button>
-          <el-button class="filter-item" icon="ElIconDelete" @click="() => { searchValue = ''; searchMenu() }">
+          </a-button>
+          <a-button class="filter-item"  @click="() => { searchValue = ''; searchMenu() }">
+           <template #icon><ElIconDeleteOutlined /></template>
             清空
-          </el-button>
-        </el-form-item>
-      </el-form>
+          </a-button>
+        </a-form-item>
+      </a-form>
     </div>
 
-    <el-row class="toolbar-container">
-      <el-button class="filter-item" type="primary" icon="ElIconPlus" @click="addSubMenu('0')" v-permission="'menu:save'">
+    <a-row class="toolbar-container">
+      <a-button class="filter-item" type="primary" @click="addSubMenu('0')" v-permission="'menu:save'">
+        <template #icon><ElIconPlusOutlined /></template>
         添加菜单
-      </el-button>
-      <el-button type="primary" icon="ElIconSort" plain @click="expand">展开/折叠</el-button>
-    </el-row>
+      </a-button>
+      <a-button type="primary"  plain @click="expand">
+        <template #icon><ElIconVerticalAlignMiddleOutlined /></template>
+      展开/折叠</a-button>
+    </a-row>
 
     <mb-table ref="table" v-bind="tableOptions" v-if="menuData && menuData.length > 0 && refreshTable" />
 
@@ -58,6 +63,7 @@ const tableOptions = reactive({
       field: 'name',
       label: '菜单名称',
       align: 'left',
+      width: '15%',
       type: 'html'
     },
     {
@@ -95,7 +101,7 @@ const tableOptions = reactive({
         {
           label: '上移',
           type: 'text',
-          icon: 'ElIconSortUp',
+          icon: 'ElIconUpOutlined',
           click: (row) => {
             proxy.$get('/system/menu/sort/up',{
               id: row.id,
@@ -109,7 +115,7 @@ const tableOptions = reactive({
         {
           label: '下移',
           type: 'text',
-          icon: 'ElIconSortDown',
+          icon: 'ElIconDownOutlined',
           click: (row) => {
             proxy.$get('/system/menu/sort/down',{
               id: row.id,
@@ -157,7 +163,7 @@ const tableOptions = reactive({
           label: '添加下级菜单',
           type: 'text',
           permission: 'menu:save',
-          icon: 'ElIconPlus',
+          icon: 'ElIconPlusOutlined',
           click: (row) => {
             addSubMenu(row.id)
           }
@@ -166,7 +172,7 @@ const tableOptions = reactive({
           label: '修改',
           type: 'text',
           permission: 'menu:save',
-          icon: 'ElIconEdit',
+          icon: 'ElIconFormOutlined',
           click: (row) => {
             handleUpdate(row)
           }
@@ -175,7 +181,7 @@ const tableOptions = reactive({
           label: '删除',
           type: 'text',
           permission: 'menu:delete',
-          icon: 'ElIconDelete',
+          icon: 'ElIconDeleteOutlined',
           click: (row) => {
             proxy.$common.handleDelete({
               url: '/system/menu/delete',
@@ -193,6 +199,8 @@ var searchTimeout = null
 const menuFormDialog = ref()
 const menuFormRef = ref()
 
+const table = ref();
+
 function reloadTable(){
   proxy.$get('/system/menu/tree').then(res => {
     menuData.value = res.data.list
@@ -201,9 +209,14 @@ function reloadTable(){
 }
 
 function expand(){
-  refreshTable.value = false
-  tableOptions.props["default-expand-all"] = !tableOptions.props["default-expand-all"]
-  nextTick(() => refreshTable.value = true)
+  refreshTable.value = false;
+  tableOptions.props["default-expand-allRows"] = !tableOptions.props["default-expand-allRows"];
+  nextTick(() => refreshTable.value = true);
+
+
+  // console.log('table:::{}',menuData.value);
+  // table.value.getExpandedRowKeys(menuData.value)
+  // nextTick(() => refreshTable.value = true)
 }
 
 function searchMenu() {
@@ -221,6 +234,7 @@ function searchMenu() {
 }
 
 function addSubMenu(id) {
+  // console.log('id::{}::::{}',id,menuData);
   dialogTitle.value = '添加'
   menuFormDialog.value.show()
   nextTick(() => {
@@ -229,15 +243,20 @@ function addSubMenu(id) {
 }
 
 function handleUpdate(row) {
+  // console.log('row::{}::::{}',row,menuData);
   dialogTitle.value = '修改'
-  menuFormDialog.value.show()
+  menuFormDialog.value.show();
   nextTick(() => {
+    // console.log('***************menuFormRef：：：{}',menuFormRef);
     menuFormRef.value.getInfo(row);
+    
+    
+    
   })
 }
 
 function generateIconCode(symbol) {
-  return `<svg style="width: 20px;height: 20px;fill: #999" aria-hidden="true" class="svg-icon disabled"><use href="#icon-${symbol}"></use></svg>`
+  return `<svg style="width: 20px;height: 20px;fill: #999" aria-hidden="true" class="svg-icon disabled"><use href="${symbol}"></use></svg>`
 }
 
 onMounted(() => reloadTable())

@@ -1,10 +1,10 @@
 <template>
   <div class="icons-container">
-    <el-tabs type="border-card">
-      <el-tab-pane label="Icons">
+    <a-tabs type="border-card">
+      <a-tab-pane label="Icons">
         <div class="grid">
           <div v-for="item of svgIcons" :key="item" @click="selectIcon(item)">
-            <el-tooltip placement="top">
+            <a-tooltip placement="top">
               <template #content>
                 <mb-icon :icon="item" />
               </template>
@@ -13,11 +13,11 @@
                 <svg-icon :icon-class="item" class-name="disabled" />
                 <span>{{ item }}</span>
               </div>
-            </el-tooltip>
+            </a-tooltip>
           </div>
         </div>
-      </el-tab-pane>
-    </el-tabs>
+      </a-tab-pane>
+    </a-tabs>
   </div>
 </template>
 

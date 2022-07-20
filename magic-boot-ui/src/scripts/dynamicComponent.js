@@ -1,20 +1,26 @@
 import { babelParse } from '@vue/compiler-sfc'
 import { compileFile } from '@/compiler/sfc-compiler.js'
-import { ElLoading, ElMessage } from 'element-plus'
+// import { ElLoading, ElMessage } from 'element-plus'
+
+import { message } from 'ant-design-vue';
 
 export function appComponent(app, item){
     var compiled = {}
     compileFile('TestCode.vue', item.code, compiled)
     if(compiled.errors.length > 0){
-        ElMessage({
-            type: 'error',
-            duration: 0,
-            showClose: true,
-            message: `
-                组件“${item.name}”发生错误：
-                ${compiled.errors[0]}
-            `
-        })
+        message.error(`
+            组件“${item.name}”发生错误：
+            ${compiled.errors[0]}
+        `);
+        // ElMessage({
+        //     type: 'error',
+        //     duration: 0,
+        //     showClose: true,
+        //     message: `
+        //         组件“${item.name}”发生错误：
+        //         ${compiled.errors[0]}
+        //     `
+        // })
         throw compiled.errors[0]
     }else{
         var code = compiled.js

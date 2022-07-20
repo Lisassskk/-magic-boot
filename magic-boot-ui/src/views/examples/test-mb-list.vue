@@ -21,7 +21,7 @@ const listOptions = reactive({
     type: 'add',
     permission: 'user:save',
     click: () => {
-      formOptions.form.rows[0].cols[1].rules = [{ required: true, message: '请输入密码', trigger: 'change' }]
+      formOptions.form.rows[0].cols[1].rules = [{ required: true, message: '请输入密码', trigger: 'blur' }]
       formOptions.detail.formData = null
       formDialog.value.show()
     }
@@ -92,7 +92,7 @@ const listOptions = reactive({
             permission: 'user:save',
             label: '修改',
             type: 'text',
-            icon: 'ElIconEdit',
+            icon: 'ElIconEditOutlined',
             click: (row) => {
               // magicForm.value.getDetail(row.id)
               formOptions.form.rows[0].cols[1].rules = []
@@ -103,7 +103,7 @@ const listOptions = reactive({
             permission: 'user:delete',
             label: '删除',
             type: 'text',
-            icon: 'ElIconDelete',
+            icon: 'ElIconDeleteOutlined',
             click: (row) => {
               proxy.$common.handleDelete({
                 url: '/system/user/delete',
@@ -135,12 +135,12 @@ const formOptions = reactive({
         name: 'head',
         component: 'upload-image',
         label: '头像',
-        rules: [{ required: true, message: '请选择头像', trigger: 'change' }]
+        rules: [{ required: true, message: '请选择头像', trigger: 'blur' }]
       },{
         span: 12,
         name: 'username',
         label: '登录名称',
-        rules: [{ required: true, message: '请输入登录名称', trigger: 'change' }]
+        rules: [{ required: true, message: '请输入登录名称', trigger: 'blur' }]
       }, {
         span: 12,
         name: 'password',
@@ -164,7 +164,7 @@ const formOptions = reactive({
         span: 12,
         name: 'officeId',
         label: '组织机构',
-        rules: [{ required: true, message: '请选择组织机构', trigger: 'change' }],
+        rules: [{ required: true, message: '请选择组织机构', trigger: 'blur' }],
         props: {
           url: '/system/user/offices'
         }
@@ -173,7 +173,7 @@ const formOptions = reactive({
         span: 12,
         name: 'roles',
         label: '选择角色',
-        rules: [{ required: true, message: '请选择角色', trigger: 'change' }],
+        rules: [{ required: true, message: '请选择角色', trigger: 'blur' }],
         props: {
           url: '/system/role/all',
           placeholder: '请选择角色',

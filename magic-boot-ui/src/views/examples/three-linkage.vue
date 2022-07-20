@@ -1,13 +1,13 @@
 <template>
   <div>
-    <el-select v-for="(data, i) in dataList" :key="i" v-model="dataValues[i]" :placeholder="'请选择' + (i+1) + '级'" @change="selectChange">
-      <el-option
+    <a-select v-for="(data, i) in dataList" :key="i" v-model="dataValues[i]" :placeholder="'请选择' + (i+1) + '级'" @change="selectChange">
+      <a-option
         v-for="item in data"
         :key="item.id"
         :label="item.name"
         :value="item.id"
       />
-    </el-select>
+    </a-select>
   </div>
 </template>
 

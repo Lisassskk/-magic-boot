@@ -1,29 +1,31 @@
 <template>
-  <el-form
+  <a-form
     ref="dataForm"
-    :rules="rules"
     :model="formData"
     v-bind="form.props"
+    :validateOnRuleChange="true"
+    :scrollToFirstError="true"
+    @validate="handleValidate"
   >
-    <el-row v-for="(row,i) in form.rows" :key="i" :gutter="row.gutter">
-      <el-col v-for="(col,j) in row.cols" :key="j" :span="col.span" v-bind="col.colProps">
-        <el-form-item :label="col.label" :label-width="col.labelWidth" :prop="col.name" v-bind="col.formItemProps">
+    <a-row v-for="(row,i) in form.rows" :key="i" :gutter="row.gutter">
+      <a-col v-for="(col,j) in row.cols" :key="j" :span="col.span" v-bind="col.colProps">
+        <a-form-item  :rules="col.rules" :label="col.label" :label-width="col.labelWidth" :name="col.name" v-bind="col.formItemProps">
           <component
-            :is="!col.component ? 'mb-input' : col.component.startsWith('el-') || $global.dynamicComponentNames.indexOf(col.component) != -1 ? col.component : 'mb-' + col.component"
+            :is="!col.component ? 'mb-input' : col.component.startsWith('a-') || $global.dynamicComponentNames.indexOf(col.component) != -1 ? col.component : 'mb-' + col.component"
             v-model="formData[col.name]"
             :item-label="col.label"
             v-bind="col.props"
           />
-        </el-form-item>
-      </el-col>
-    </el-row>
-  </el-form>
+        </a-form-item>
+      </a-col>
+    </a-row>
+  </a-form>
 </template>
 
 <script setup>
   import {ref, reactive, getCurrentInstance } from 'vue'
   const { proxy } = getCurrentInstance()
-  const rules = reactive(getRules())
+  // const rules = reactive(getRules())
   const formData = ref(initFormData())
   const dataForm = ref()
   const props = defineProps({
@@ -57,17 +59,17 @@
 
   }
 
-  function getRules(){
-    var _rules = {}
-    props.form.rows.forEach(row => {
-      row.cols.forEach(col => {
-        if (col.rules) {
-          _rules[col.name] = col.rules
-        }
-      })
-    })
-    return _rules
-  }
+  // function getRules(){
+  //   var _rules = {}
+  //   props.form.rows.forEach(row => {
+  //     row.cols.forEach(col => {
+  //       if (col.rules) {
+  //         _rules[col.name] = col.rules
+  //       }
+  //     })
+  //   })
+  //   return _rules
+  // }
 
   function initFormData() {
     var data = {}
@@ -83,8 +85,12 @@
     return formData.value
   }
 
+  const handleValidate = (...args) => {
+      console.log(args);
+    };
+
   function save(d) {
-    dataForm.value.validate((valid) => {
+    dataForm.value.validate().then((valid) => {
       if (valid) {
         d.loading()
         proxy.$post(props.form.request.url, formData.value).then(res => {
@@ -106,6 +112,7 @@
   }
 
   function getDetail(id) {
+    console.log('getDetail被调用了：：{}',id);
     formData.value[props.primaryField] = id
     proxy.$get(props.detail.request.url, { [props.primaryField]: id }).then(res => {
       const { data } = res

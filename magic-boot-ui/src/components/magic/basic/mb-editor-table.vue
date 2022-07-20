@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-row style="margin-bottom: 6px" v-if="toolbar">
-      <el-button type="primary" @click="addRow">添加一行</el-button>
-    </el-row>
+    <a-row style="margin-bottom: 6px" v-if="toolbar">
+      <a-button type="primary" @click="addRow">添加一行</a-button>
+    </a-row>
     <mb-table ref="magicTable" v-bind="tableOptions">
       <template v-for="col in cols" #[col.field]="{ index }">
         <div v-if="!col.component">
@@ -10,7 +10,7 @@
         </div>
         <component
           v-else
-          :is="col.component.startsWith('el-') ? col.component : 'mb-' + col.component"
+          :is="col.component.startsWith('a-') ? col.component : 'mb-' + col.component"
           v-model="tableOptions.data[index][col.field]"
           v-bind="col.props"
           @change="dataChange"

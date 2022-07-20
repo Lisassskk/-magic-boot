@@ -3,42 +3,43 @@
 
     <mb-search :where="tableOptions.where" @search="reloadTable" />
 
-    <el-row class="toolbar-container">
-      <el-button v-permission="'dict:save'" class="filter-item" type="primary" icon="ElIconPlus" @click="handleCreate">
+    <a-row class="toolbar-container">
+      <a-button v-permission="'dict:save'" class="filter-item" type="primary"  @click="handleCreate">
+        <template #icon><ElIconPlusOutlined /></template>
         添加
-      </el-button>
-    </el-row>
+      </a-button>
+    </a-row>
 
     <mb-table ref="table" v-bind="tableOptions" />
 
     <mb-dialog ref="dictDialog" :title="dialogTitle" width="640px" @confirm-click="save($event)">
       <template #content>
-        <el-form ref="dataForm" :inline="true" :rules="rules" :model="temp" label-position="right" label-width="80px">
-          <el-row :gutter="24">
-            <el-col :span="12">
-              <el-form-item label="字典类型" prop="dictType">
-                <mb-select v-model="temp.dictType" type="dict_type" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="类型" prop="type">
-                <el-input v-model="temp.type" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="24">
-            <el-col :span="12">
-              <el-form-item label="描述" prop="descRibe">
-                <el-input v-model="temp.descRibe" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="备注" prop="remarks">
-                <el-input v-model="temp.remarks" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
+        <a-form ref="dataForm" layout="inline" :rules="rules" :model="temp" label-position="right" label-width="80px">
+          <a-row :gutter="24">
+            <a-col :span="12">
+              <a-form-item label="字典类型" name="dictType">
+                <mb-select v-model:value="temp.dictType" type="dict_type" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="类型" name="type">
+                <a-input v-model:value="temp.type" />
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="24">
+            <a-col :span="12">
+              <a-form-item label="描述" name="descRibe">
+                <a-input v-model:value="temp.descRibe" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="备注" name="remarks">
+                <a-input v-model:value="temp.remarks" />
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form>
       </template>
     </mb-dialog>
 
@@ -108,7 +109,7 @@ const tableOptions = reactive({
           permission: 'dict:save',
           label: '修改',
           type: 'text',
-          icon: 'ElIconEdit',
+          icon: 'ElIconEditOutlined',
           click: (row) => {
             handleUpdate(row)
           }
@@ -117,7 +118,7 @@ const tableOptions = reactive({
           permission: 'dict:delete',
           label: '删除',
           type: 'text',
-          icon: 'ElIconDelete',
+          icon: 'ElIconDeleteOutlined',
           click: (row) => {
             proxy.$common.handleDelete({
               url: '/system/dict/delete',
@@ -148,9 +149,9 @@ const dictId = ref('')
 const temp = ref(getTemp())
 const dialogTitle = ref('')
 const rules = reactive({
-  dictType: [{ required: true, message: '请输入标签', trigger: 'change' }],
-  type: [{ required: true, message: '请输入类型', trigger: 'change' }],
-  descRibe: [{ required: true, message: '请输入描述', trigger: 'change' }]
+  dictType: [{ required: true, message: '请输入标签', trigger: 'blur' }],
+  type: [{ required: true, message: '请输入类型', trigger: 'blur' }],
+  descRibe: [{ required: true, message: '请输入描述', trigger: 'blur' }]
 })
 const table = ref()
 const dictDialog = ref()
@@ -181,7 +182,7 @@ function handleCreate() {
 }
 
 function save(d) {
-  dataForm.value.validate((valid) => {
+  dataForm.value.validate().then((valid) => {
     if (valid) {
       d.loading()
       proxy.$post('/system/dict/save', temp.value).then((response) => {

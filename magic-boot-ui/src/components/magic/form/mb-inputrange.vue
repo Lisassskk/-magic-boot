@@ -1,7 +1,7 @@
 <template>
-  <el-input v-model="input1" />
+  <a-input v-model:value="input1" />
   <span>-</span>
-  <el-input v-model="input2" />
+  <a-input v-model:value="input2"  />
 </template>
 
 <script setup>
@@ -21,12 +21,14 @@ if(props.modelValue){
 }
 
 watch([input1, input2], () => {
+  // console.log('*****************input1::{}',input1);
+  // console.log('*****************input2::{}',input2);
   emit('update:modelValue', input1.value + ',' + input2.value)
 })
 </script>
 
 <style scoped>
-  .el-input{
+  .ant-input{
     display: inline-block;
     width: 47%;
   }

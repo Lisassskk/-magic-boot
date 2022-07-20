@@ -42,6 +42,19 @@ const routes = [
   },
 
   {
+    path: '/test-list',
+    redirect: '/system/test/test-list',
+    component: Layout,
+    hidden: true,
+    children: [{
+      path: '/system/test/test-list',
+      name: '测试页面',
+      component: () => import('@/views/system/test/test-list'),
+      meta: { title: '测试页面' }
+    }]
+  },
+
+  {
     path: '/login',
     component: () => import('@/views/login.vue'),
     hidden: true

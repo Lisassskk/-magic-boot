@@ -37,8 +37,8 @@ export default {
     imgChange() {
       console.log(this.imgUrl)
     },
-    multipleImgChange() {
-      console.log(this.multipleImgUrl)
+    multipleImgChange(e) {
+      console.log(this.multipleImgUrl,e)
     }
   }
 }

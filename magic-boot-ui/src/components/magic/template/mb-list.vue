@@ -3,17 +3,21 @@
 
     <mb-search v-if="table.where" :where="table.where" :no-reset="search && search.noReset" @search="reload" />
 
-    <el-row class="toolbar-container">
+    <a-row class="toolbar-container">
       <div v-for="(it, i) in tools" :key="i">
-        <el-button v-if="it.type == 'add'" v-permission="it.permission" class="filter-item" type="primary" icon="ElIconPlus" @click="it.click">
+        <a-button v-if="it.type == 'add'" v-permission="it.permission" class="filter-item" type="primary"  @click="it.click">
+          <template #icon><ElIconPlusOutlined /></template>
           {{ it.label || '添加' }}
-        </el-button>
+        </a-button>
         <mb-button v-else-if="it.type == 'delete'" v-permission="it.permission" :plain="true" :request-url="it.url" :btn-type="'delete'" :request-data="{ id: ids }" :after-handler="reload" />
-        <el-button v-else :icon="it.icon" :key="it.label" v-permission="it.permission" :type="it.type" :size="it.size" :class="it.class" @click="it.click(ids)">
+        <a-button v-else  :key="it.label" v-permission="it.permission" :type="it.type" :size="it.size" :class="it.class" @click="it.click(ids)">
+          <template #icon>
+            <component v-if="it.icon" :is="it.icon" />
+          </template>
           {{ it.label }}
-        </el-button>
+        </a-button>
       </div>
-    </el-row>
+    </a-row>
 
     <mb-table ref="tableRef" v-bind="table" @selection-change="selectionChange" />
 

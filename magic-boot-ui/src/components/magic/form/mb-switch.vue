@@ -1,16 +1,18 @@
 <template>
-  <el-switch
-    v-model="selectValue"
-    :active-value="activeValue"
-    :inactive-value="inactiveValue"
+  <a-switch
+    :v-if="selectValue"
+    v-model:checked="selectValue"
+    :checked-value="activeValue"
+    :un-checked-value="inactiveValue"
     v-bind="props.props"
   />
+  <span>{{selectValue}}</span>
 </template>
 
 <script setup>
 import {ref, watch} from 'vue'
   const emit = defineEmits(['update:modelValue'])
-  const selectValue = ref(false)
+  const selectValue = ref(0)
   const props = defineProps({
     modelValue: {
       type: Boolean,
@@ -28,4 +30,5 @@ import {ref, watch} from 'vue'
   watch(selectValue, (value) => {
     emit('update:modelValue', value)
   })
+
 </script>

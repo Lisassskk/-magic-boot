@@ -1,5 +1,5 @@
 <style>
-.el-input-number .el-input__inner{
+.ant-input-number .ant-input__inner{
   text-align: left;
 }
 </style>
@@ -8,65 +8,71 @@
   <div class="app-container">
 
     <div class="filter-container">
-      <el-form :inline="true">
-        <el-form-item label="机构搜索">
-          <el-input v-model="searchValue" @input="searchOffice" placeholder="机构名称、机构编码"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button class="filter-item" type="primary" icon="ElIconSearch" @click="searchOffice">
+      <a-form  layout="inline">
+        <a-form-item label="机构搜索" >
+          <a-input v-model:value="searchValue" @input="searchOffice" placeholder="机构名称、机构编码"></a-input>
+        </a-form-item>
+        <a-form-item >
+          <a-button class="filter-item" type="primary" @click="searchOffice">
+            <template #icon><ElIconSearchOutlined /></template>
             搜索
-          </el-button>
-          <el-button class="filter-item" icon="ElIconDelete" @click="() => { this.searchValue = ''; searchOffice() }">
+          </a-button>
+          <a-button class="filter-item"  @click="() => { searchValue = ''; searchOffice() }">
+            <template #icon><ElIconDeleteOutlined /></template>
             清空
-          </el-button>
-        </el-form-item>
-      </el-form>
+          </a-button>
+        </a-form-item>
+      </a-form>
     </div>
 
-    <el-row class="toolbar-container">
-      <el-button class="filter-item" type="primary" icon="ElIconEdit" @click="addSubOffice('0')" v-permission="'office:save'">
+    <a-row class="toolbar-container">
+      <a-button class="filter-item" type="primary"  @click="addSubOffice('0')" v-permission="'office:save'">
+        <template #icon><ElIconPlusOutlined /></template>
         添加机构
-      </el-button>
-      <el-button type="primary" icon="ElIconSort" plain @click="expand">展开/折叠</el-button>
-    </el-row>
+      </a-button>
+      <a-button type="primary"  plain @click="expand">
+       <template #icon><ElIconVerticalAlignMiddleOutlined /></template>
+       展开/折叠
+      </a-button>
+    </a-row>
 
     <mb-table ref="table" v-bind="tableOptions" v-if="officeData && officeData.length > 0 && refreshTable" />
 
     <mb-dialog ref="officeFormDialog" width="700px" :title="dialogTitle" @confirm-click="save($event)">
       <template #content>
-        <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px">
-          <el-row :gutter="24">
-            <el-col :span="12">
-              <el-form-item label="机构类型" prop="type">
-                <mb-select v-model="temp.type" type="office_type" width="100%" :key="temp.type" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="上级机构" prop="pid">
-                <el-tree-select v-model="temp.pid" :key="temp.pid" :data="officeTree" style="width: 100%" check-strictly />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="24">
-            <el-col :span="12">
-              <el-form-item label="机构名称" prop="name">
-                <el-input v-model="temp.name" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="机构编码" prop="code">
-                <el-input v-model="temp.code" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="24">
-            <el-col :span="12">
-              <el-form-item label="排序" prop="sort">
-                <el-input-number v-model="temp.sort" controls-position="right" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
+        <a-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px">
+          <a-row :gutter="24">
+            <a-col :span="12">
+              <a-form-item label="机构类型" name="type">
+                <mb-select v-model:value="temp.type" type="office_type" width="100%" :key="temp.type" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="上级机构" name="pid">
+                <a-tree-select v-model:value="temp.pid" :key="temp.pid" :tree-data="officeTree" style="width: 100%" check-strictly />
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="24">
+            <a-col :span="12">
+              <a-form-item label="机构名称" name="name">
+                <a-input v-model:value="temp.name" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="机构编码" name="code">
+                <a-input v-model:value="temp.code" />
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="24">
+            <a-col :span="12">
+              <a-form-item label="排序" name="sort">
+                <a-input-number v-model:value="temp.sort" controls-position="right" />
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form>
       </template>
     </mb-dialog>
 
@@ -94,6 +100,7 @@ const tableOptions = reactive({
       field: 'name',
       label: '机构名称',
       align: 'left',
+      width: '15%',
       type: 'html'
     },
     {
@@ -123,7 +130,7 @@ const tableOptions = reactive({
         {
           label: '上移',
           type: 'text',
-          icon: 'ElIconSortUp',
+          icon: 'ElIconUpOutlined',
           click: (row) => {
             proxy.$get('/system/office/sort/up',{
               id: row.id,
@@ -137,7 +144,7 @@ const tableOptions = reactive({
         {
           label: '下移',
           type: 'text',
-          icon: 'ElIconSortDown',
+          icon: 'ElIconDownOutlined',
           click: (row) => {
             proxy.$get('/system/office/sort/down',{
               id: row.id,
@@ -170,7 +177,7 @@ const tableOptions = reactive({
           label: '修改',
           type: 'text',
           permission: 'office:save',
-          icon: 'ElIconEdit',
+          icon: 'ElIconEditOutlined',
           click: (row) => {
             handleUpdate(row)
           }
@@ -179,7 +186,7 @@ const tableOptions = reactive({
           label: '删除',
           type: 'text',
           permission: 'office:delete',
-          icon: 'ElIconDelete',
+          icon: 'ElIconDeleteOutlined',
           if: (row) => {
             return row.pid != '0';
           },
@@ -211,10 +218,10 @@ const tableOptions = reactive({
 const dialogTitle = ref('')
 const temp = ref(getTemp())
 const rules = reactive({
-  type: [{ required: true, message: '请选择机构类型', trigger: 'change' }],
-  pid: [{ required: true, message: '请选择上级机构', trigger: 'change' }],
-  name: [{ required: true, message: '请输入机构名称', trigger: 'change' }],
-  code: [{ required: true, message: '请输入机构编码', trigger: 'change' }]
+  type: [{ required: true, message: '请选择机构类型', trigger: 'blur' }],
+  pid: [{ required: true, message: '请选择上级机构', trigger: 'blur' }],
+  name: [{ required: true, message: '请输入机构名称', trigger: 'blur' }],
+  code: [{ required: true, message: '请输入机构编码', trigger: 'blur' }]
 })
 var searchTimeout = null
 const officeFormDialog = ref()
@@ -233,15 +240,21 @@ watch(officeData, () => {
 })
 
 function expand(){
-  refreshTable.value = false
-  tableOptions.props["default-expand-all"] = !tableOptions.props["default-expand-all"]
-  nextTick(() => refreshTable.value = true)
+
+  refreshTable.value = false;
+  tableOptions.props["default-expand-allRows"] = !tableOptions.props["default-expand-allRows"];
+  nextTick(() => refreshTable.value = true);
+
+  // refreshTable.value = false
+  // tableOptions.props["default-expand-all"] = !tableOptions.props["default-expand-all"]
+  // nextTick(() => refreshTable.value = true)
 }
 
 function searchOffice() {
   clearTimeout(searchTimeout)
   searchTimeout = setTimeout(() => {
     if(searchValue.value){
+
       tableOptions.data = proxy.$treeTable.recursionSearch(['name', 'code'], proxy.$common.copyNew(officeData.value), searchValue.value)
     }else{
       tableOptions.data = officeData.value
@@ -283,7 +296,7 @@ function addSubOffice(id) {
 }
 
 function save(d) {
-  dataForm.value.validate((valid) => {
+  dataForm.value.validate().then((valid) => {
     if (valid) {
       d.loading()
       if(temp.value.pid == temp.value.id){
@@ -339,3 +352,12 @@ function handleUpdate(row) {
 }
 
 </script>
+<style scoped>
+   .aForm{
+    display: flex;
+  }
+
+  .aFormItem{
+    margin-right: 30px;
+  }
+</style>

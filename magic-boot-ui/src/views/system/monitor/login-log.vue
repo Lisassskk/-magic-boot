@@ -15,7 +15,8 @@
         component: 'date',
         label: '创建时间',
         props: {
-          type: 'datetimerange'
+          type: 'datetimerange',
+          format: 'YYYY-MM-DD HH:mm:ss'
         }
       }
     },

@@ -1,6 +1,7 @@
 <template>
   <mb-icon v-if="icon" :icon="icon" style="margin-right: 5px;"/>
-  <span v-if="title" slot='title'>{{ title }}</span>
+  <span v-if="title" slot="title" style="color:black" >{{ title }}</span>
+
 </template>
 
 <script setup>
@@ -11,7 +12,7 @@
 </script>
 
 <style scoped>
-.el-menu-item.is-active svg{
+.ant-menu .ant-menu-item .is-active svg{
   fill: var(--mb-main-color);
 }
 </style>

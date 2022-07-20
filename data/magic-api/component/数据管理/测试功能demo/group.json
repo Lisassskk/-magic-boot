@@ -1,0 +1,14 @@
+{
+  "properties" : { },
+  "id" : "3442f636245e44a997d3af4db8a33ee9",
+  "name" : "测试功能demo",
+  "type" : "component",
+  "parentId" : "55ff62aa20144b7bb5c6dfb5d76c8139",
+  "path" : "/testdemo",
+  "createTime" : 1657866263399,
+  "updateTime" : null,
+  "createBy" : null,
+  "updateBy" : null,
+  "paths" : [ ],
+  "options" : [ ]
+}

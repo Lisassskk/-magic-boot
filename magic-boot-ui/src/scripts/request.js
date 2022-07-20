@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { ElMessage, ElMessageBox } from 'element-plus'
+// import { ElMessage, ElMessageBox } from 'element-plus'
+import { message } from 'ant-design-vue';
 import { logout, login } from '@/scripts/auth'
 import { getToken } from '@/scripts/auth'
 import global from '@/scripts/global'
@@ -55,12 +56,12 @@ service.interceptors.response.use(
         if (res.code === 402) {
           duration = 1
           if(global.user.info.username){
-            ElMessageBox.prompt(`当前账号：${global.user.info.username}凭证已过期，请输入密码重新登录`, '提示', {
-              confirmButtonText: '确定',
-              cancelButtonText: '退出',
-              inputType: 'password',
-              closeOnClickModal: false,
-              beforeClose: (action, instance, done) => {
+            Modal.confirm({
+              title: `提示`,
+              icon: createVNode(ExclamationCircleOutlined),
+              content: createVNode('div', { style: 'color:red;' },  `当前账号：${global.user.info.username}凭证已过期，请输入密码重新登录`),
+              onOk() {
+                console.log('OK');
                 if (action === 'confirm') {
                   login({
                     username: global.user.info.username,
@@ -76,8 +77,53 @@ service.interceptors.response.use(
                 } else {
                   done()
                 }
-              }
-            })
+              },
+              onCancel() {
+                console.log('Cancel');
+                if (action === 'confirm') {
+                  login({
+                    username: global.user.info.username,
+                    password: instance.inputValue
+                  }).then((res) => {
+                    if (res) {
+                      done()
+                      service(response.config).then(ret => reslove(ret))
+                    }
+                  })
+                } else if (action === 'cancel') {
+                  logout()
+                } else {
+                  done()
+                }
+              },
+              class: 'test',
+              okText: '确定',
+              cancelText: '退出',
+            });
+
+            // ElMessageBox.prompt(`当前账号：${global.user.info.username}凭证已过期，请输入密码重新登录`, '提示', {
+            //   confirmButtonText: '确定',
+            //   cancelButtonText: '退出',
+            //   inputType: 'password',
+            //   closeOnClickModal: false,
+            //   beforeClose: (action, instance, done) => {
+            //     if (action === 'confirm') {
+            //       login({
+            //         username: global.user.info.username,
+            //         password: instance.inputValue
+            //       }).then((res) => {
+            //         if (res) {
+            //           done()
+            //           service(response.config).then(ret => reslove(ret))
+            //         }
+            //       })
+            //     } else if (action === 'cancel') {
+            //       logout()
+            //     } else {
+            //       done()
+            //     }
+            //   }
+            // })
           }
         }
         if (res.code !== 402) {
@@ -87,12 +133,13 @@ service.interceptors.response.use(
           if(res.code == 403 && import.meta.env.MODE == 'demo'){
             res.message = '演示模式，不允许操作！'
           }
-          currentMessage = ElMessage({
-            message: res.message || 'Error',
-            type: 'error',
-            duration: duration * 1000,
-            showClose: true
-          })
+          // currentMessage = ElMessage({
+          //   message: res.message || 'Error',
+          //   type: 'error',
+          //   duration: duration * 1000,
+          //   showClose: true
+          // })
+          currentMessage = message.error(res.message || 'Error');
           reject(res)
         }
       } else {
@@ -105,11 +152,12 @@ service.interceptors.response.use(
     if(currentMessage){
       currentMessage.close()
     }
-    currentMessage = ElMessage({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
+    // currentMessage = ElMessage({
+    //   message: error.message,
+    //   type: 'error',
+    //   duration: 5 * 1000
+    // })
+    currentMessage = message.error(res.message || 'Error');
     return Promise.reject(error)
   }
 )

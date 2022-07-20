@@ -1,16 +1,19 @@
 <template>
   <div>
     <div style="margin-bottom: 5px;" v-if="expand || checked">
-      <el-button v-if="expand" type="primary" icon="ElIconSort" plain @click="doExpand">展开/折叠</el-button>
-      <el-button v-if="checked" type="primary" icon="ElIconCheck" plain @click="() => { treeAllChecked = !treeAllChecked; checkedAll(treeData, treeAllChecked) }">全选/全不选</el-button>
+      <a-button v-if="expand" type="primary" plain @click="doExpand">
+        <template #icon><ElIconVerticalAlignMiddleOutlined /></template>
+        展开/折叠
+      </a-button>
+      <a-button v-if="checked" type="primary" icon="ElIconCheck" plain @click="() => { treeAllChecked = !treeAllChecked; checkedAll(treeData, treeAllChecked) }">全选/全不选</a-button>
     </div>
     <div style="margin-bottom: 5px;" v-if="search">
-      <el-input v-model="searchValue" placeholder="输入关键字进行过滤" @input="tree.filter(searchValue)" :style="{ width: searchWidth }" />
+      <a-input v-model:value="searchValue" placeholder="输入关键字进行过滤" @input="tree.filter(searchValue)" :style="{ width: searchWidth }" />
     </div>
-    <el-tree
+    <a-tree
       v-if="refreshTree"
       ref="tree"
-      :data="treeData"
+      :tree-data="treeData"
       v-bind="props.props"
       node-key="id"
       :default-expand-all="defaultExpandAll"
@@ -19,6 +22,7 @@
       :props="defaultProps"
       :filter-node-method="searchTree"
       :style="style"
+      :fieldNames = "{children:'children', title:'name', key:'key' }"
     />
   </div>
 </template>
@@ -92,7 +96,10 @@ watch(() => props.modelValue, (value) => {
 function selectIds(ids){
   ids = ids.split(',')
   for(var i=0;i<ids.length;i++){
-    tree.value && tree.value.setChecked(ids[i],true,false)
+    // tree.value && tree.value.setChecked(ids[i],true,false)
+    if(tree.value){
+      tree.value.checked = true;
+    }
   }
 }
 
@@ -111,6 +118,10 @@ async function loadTreeData() {
   if(treeData.value.length == 0){
     await proxy.$get(props.url, props.params).then((res) => {
       treeData.value = res.data.list
+      console.log('treeData.value::::{}',treeData.value);
+      // treeData.value.forEach(item=>{
+      //   item.title = item.name;
+      // })
     })
     refreshTree.value = true
     nextTick(() => selectIds(props.modelValue))
@@ -142,7 +153,8 @@ function checkedAll(children, checked) {
       if(children[i].children && children[i].children.length > 0){
         checkedAll(children[i].children, checked)
       }
-      tree.value.setChecked(id, checked, true)
+      // tree.value.setChecked(id, checked, true)
+      tree.value.checked = checked;
     }
   }
 }

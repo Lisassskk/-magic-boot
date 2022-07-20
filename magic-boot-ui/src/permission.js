@@ -1,6 +1,7 @@
 import router from './scripts/router'
 import { getUserInfo, removeToken } from './scripts/auth'
-import { ElMessage } from 'element-plus'
+// import { ElMessage } from 'element-plus'
+import { message } from 'ant-design-vue';
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/scripts/auth' // get token from cookie
@@ -51,7 +52,7 @@ router.beforeEach(async(to, from, next) => {
           console.log(error)
           // remove token and go to login page to re-login
           removeToken()
-          ElMessage.error(error.data || 'Has Error')
+          message.error(error.data || 'Has Error')
           next(`/login`)
           NProgress.done()
         }

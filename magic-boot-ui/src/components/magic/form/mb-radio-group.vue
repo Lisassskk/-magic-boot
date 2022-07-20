@@ -1,19 +1,25 @@
 <template>
-  <el-radio-group
-    v-model="selectValue"
+  <a-radio-group
+    v-model:value="selectValue"
     :size="size"
     :disabled="disabled"
     :text-color="textColor"
     :fill="fill"
     @change="change"
   >
-    <el-radio-button v-if="button" v-for="it in options" v-bind="it" :label="it[valueField]">
+    <!-- <el-radio-button v-if="button" v-for="it in options" v-bind="it" :label="it[valueField]">
       {{ it[labelField] }}
-    </el-radio-button>
-    <el-radio  v-if="!button" v-for="it in options" v-bind="it" :label="it[valueField]">
-      {{ it[labelField] }}
-    </el-radio>
-  </el-radio-group>
+    </el-radio-button> -->
+    <template v-for="it in options">
+       <a-radio  v-if="!button"  v-bind:key="it" :label="it[valueField]" :value="it[valueField]">
+        {{ it[labelField] }}
+      </a-radio>
+      <a-radio-button  v-if="button"  v-bind:key="it" :label="it[valueField]" :value="it[valueField]">
+        {{ it[labelField] }}
+      </a-radio-button>
+    </template>
+   
+  </a-radio-group>
 </template>
 
 <script setup>

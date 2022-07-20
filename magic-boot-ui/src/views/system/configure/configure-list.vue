@@ -3,78 +3,79 @@
 
     <mb-search :where="tableOptions.where" @search="reloadTable" />
 
-    <el-row class="toolbar-container">
-      <el-button v-permission="'configure:save'" class="filter-item" type="primary" icon="ElIconPlus" @click="handleCreate">
+    <a-row class="toolbar-container">
+      <a-button v-permission="'configure:save'" class="filter-item" type="primary"  @click="handleCreate">
+        <template #icon><ElIconPlusOutlined /></template>
         添加
-      </el-button>
-    </el-row>
+      </a-button>
+    </a-row>
 
     <mb-table ref="table" v-bind="tableOptions" />
 
     <mb-dialog ref="roleFormDialog" :title="dialogTitle" width="900px" @confirm-click="save($event)">
       <template #content>
-        <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px">
-          <el-row :gutter="24">
-            <el-col :span="12">
-              <el-form-item label="键值" prop="configureKey">
+        <a-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px">
+          <a-row :gutter="24">
+            <a-col :span="12">
+              <a-form-item label="键值" name="configureKey">
                 <mb-input v-model="temp.configureKey" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="数据值" prop="configureValue">
-                <el-input v-model="temp.configureValue" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="24">
-            <el-col :span="12">
-              <el-form-item label="名称" prop="configureName">
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="数据值" name="configureValue">
+                <a-input v-model:value="temp.configureValue" />
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="24">
+            <a-col :span="12">
+              <a-form-item label="名称" name="configureName">
                 <mb-input v-model="temp.configureName" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="配置类型" prop="configureType">
-                <mb-select v-model="temp.configureType" type="dict_type"/>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="24">
-            <el-col :span="24">
-              <el-form-item label="条件筛选" prop="configureCondition">
-                <el-input
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="配置类型" name="configureType">
+                <mb-select v-model:value="temp.configureType" type="dict_type"/>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="24">
+            <a-col :span="24">
+              <a-form-item label="条件筛选" name="configureCondition">
+                <a-input
                     type="textarea"
                     :rows="4"
                     placeholder="请输入条件筛选"
-                    v-model="temp.configureCondition">
-                </el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="24">
-            <el-col :span="24">
-              <el-form-item label="配置说明" prop="configureDescRibe">
-                <el-input
+                    v-model:value="temp.configureCondition">
+                </a-input>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="24">
+            <a-col :span="24">
+              <a-form-item label="配置说明" name="configureDescRibe">
+                <a-input
                     type="textarea"
                     :rows="4"
                     placeholder="请输入配置说明"
-                    v-model="temp.configureDescRibe">
-                </el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="24">
-            <el-col :span="24">
-              <el-form-item label="备注" prop="remarks">
-                <el-input
+                    v-model:value="temp.configureDescRibe">
+                </a-input>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="24">
+            <a-col :span="24">
+              <a-form-item label="备注" name="remarks">
+                <a-input
                     type="textarea"
                     :rows="4"
                     placeholder="请输入备注"
-                    v-model="temp.remarks">
-                </el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
+                    v-model:value="temp.remarks">
+                </a-input>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form>
       </template>
     </mb-dialog>
   </div>
@@ -105,39 +106,43 @@ const tableOptions = reactive({
     {
       field: 'configureKey',
       label: '配置键值',
-      width: 200
+      width: '15%'
     },
     {
       field: 'configureValue',
-      label: '配置数据'
+      label: '配置数据',
+      width: '10%'
     },
     {
       field: 'configureName',
-      label: '配置名称'
+      label: '配置名称',
+      width: '10%'
     },
     {
       field: 'configureType',
       label: '配置类型',
-      dictType: 'dict_type'
+      dictType: 'dict_type',
+      width: '10%'
     },
     {
       field: 'configureCondition',
-      label: '查询条件'
+      label: '查询条件',
+      width: '10%'
     },
     {
       field: 'configureDescRibe',
       label: '配置说明',
-      width: 200
+      width: '10%'
     },
     {
       field: 'remarks',
       label: '备注',
-      width: 200
+      width: '10%'
     },
     {
       field: 'createDate',
       label: '创建时间',
-      width: 200
+      width: '15%'
     },
     {
       label: '操作',
@@ -149,7 +154,7 @@ const tableOptions = reactive({
           permission: 'configure:save',
           label: '修改',
           type: 'text',
-          icon: 'ElIconEdit',
+          icon: 'ElIconEditOutlined',
           click: (row) => {
             handleUpdate(row)
           }
@@ -158,7 +163,7 @@ const tableOptions = reactive({
           permission: 'configure:delete',
           label: '删除',
           type: 'text',
-          icon: 'ElIconDelete',
+          icon: 'ElIconDeleteOutlined',
           click: (row) => {
             proxy.$common.handleDelete({
               url: '/system/configure/delete',
@@ -182,10 +187,10 @@ const textMap = reactive({
   create: '添加'
 })
 const rules = reactive({
-  configureName: [{ required: true, message: '请输入配置名称', trigger: 'change' }],
-  configureKey: [{ required: true, message: '请输入配置键值', trigger: 'change' }],
-  configureValue: [{ required: true, message: '请输入配置数据', trigger: 'change' }],
-  configureType: [{ required: true, message: '请选择类型', trigger: 'change' }]
+  configureName: [{ required: true, message: '请输入配置名称', trigger: 'blur' }],
+  configureKey: [{ required: true, message: '请输入配置键值', trigger: 'blur' }],
+  configureValue: [{ required: true, message: '请输入配置数据', trigger: 'blur' }],
+  configureType: [{ required: true, message: '请选择类型', trigger: 'blur' }]
 })
 const table = ref()
 const dataForm = ref()
@@ -217,7 +222,7 @@ function handleCreate() {
 }
 
 function save() {
-  dataForm.value.validate((valid) => {
+  dataForm.value.validate().then((valid) => {
     if (valid) {
       proxy.$post('/system/configure/save', temp.value).then((response) => {
         roleFormDialog.value.hide()
