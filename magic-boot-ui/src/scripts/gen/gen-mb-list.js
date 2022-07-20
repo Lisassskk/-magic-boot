@@ -79,8 +79,9 @@ function gen(groupPath, data){
                         {
                             permission: '${permissionPrefix}:save',
                             label: '修改',
-                            type: 'text',
-                            icon: 'ElEdit',
+                            type: 'primary',
+                            link: true,
+                            icon: 'ElIconEdit',
                             click: (row) => {
                                 magicFormTitle.value = '修改'
                                 formDialog.value.show();
@@ -89,8 +90,9 @@ function gen(groupPath, data){
                         }, {
                             permission: '${permissionPrefix}:delete',
                             label: '删除',
-                            type: 'text',
-                            icon: 'ElDelete',
+                            type: 'primary',
+                            link: true,
+                            icon: 'ElIconDelete',
                             click: (row) => {
                                 proxy.$common.handleDelete({
                                     url: '${groupPath}/delete',

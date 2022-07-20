@@ -2,6 +2,7 @@ import request from '@/scripts/request'
 // import { ElMessageBox, ElNotification } from 'element-plus'
 import global from '@/scripts/global'
 import { utils, writeFile } from 'xlsx'
+import { getToken } from '@/scripts/auth'
 
 import { Modal } from 'ant-design-vue'
 import { notification } from 'ant-design-vue';
@@ -65,6 +66,20 @@ const formatJson = (list, filterVal) => {
     return v[j]
   }))
 }
+
+common.$get =  (url, data) => request({ url, params: data })
+common.$delete = (url, data) => request({ url, method: 'delete', params: data })
+common.$post = (url, data) => request.post(url, data, {
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  },
+  transformRequest: [data => data && Object.keys(data).map(it => encodeURIComponent(it) + '=' + encodeURIComponent(data[it] === null || data[it] === undefined ? '' : data[it])).join('&')]
+})
+common.$postJson = (url, data) => request.post(url, JSON.stringify(data), {
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
 
 common.renderWhere = (where) => {
   var newWhere = {}
@@ -162,6 +177,36 @@ common.getParam = (data) => {
 common.getUrl = (url, data) => {
   url += (url.indexOf('?') < 0 ? '?' : '') + common.getParam(data)
   return url
+}
+
+common.downloadMore = (urls, filename) => {
+  var params = {
+    urls: encodeURI(urls),
+    filename: filename || '',
+    token: getToken()
+  }
+  var form = document.createElement("form");
+  form.style.display = 'none';
+  form.action = global.baseApi + '/system/file/download';
+  form.method = 'post';
+  document.body.appendChild(form);
+  for(var key in params){
+    var input = document.createElement("input");
+    input.type = 'hidden';
+    input.name = key;
+    input.value = params[key];
+    form.appendChild(input);
+  }
+  form.submit();
+  form.remove();
+}
+
+common.download = (urls, filename) => {
+  location.href = common.downloadHref(urls, filename)
+}
+
+common.downloadHref = (urls, filename) => {
+  return global.baseApi + `/system/file/download?urls=${encodeURI(urls)}&filename=${filename || ''}&token=${getToken()}`
 }
 
 // common.loadConfig = async() => {

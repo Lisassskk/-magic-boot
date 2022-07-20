@@ -56,7 +56,7 @@
         }, {
           label: '操作',
           type: 'btns',
-          width: 140,
+          width: 180,
           fixed: 'right',
           btns: [
             {
