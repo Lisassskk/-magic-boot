@@ -76,7 +76,7 @@
           </a-col>
           <a-col :span="12">
             <a-form-item label="上级菜单" name="pid">
-              <a-tree-select v-model:value="genInfo.info.pid" :tree-data="menuTree" :key="genInfo.info.pid" style="width: 100%" check-strictly />
+              <a-tree-select v-model:value="genInfo.info.pid" :tree-data="menuTree" :key="genInfo.info.pid" style="width: 100%" />
             </a-form-item>
           </a-col>
           <a-col :span="12">

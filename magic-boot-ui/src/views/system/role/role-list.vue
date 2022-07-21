@@ -42,13 +42,13 @@
           <a-row :gutter="24">
             <a-col :span="12">
               <a-form-item label="菜单权限" name="menus">
-                <mb-tree ref="tree" v-model="temp.menus" :props="{ 'show-checkbox': true }" style="height: 270px; overflow: auto" url="/system/menu/tree" :search="true" />
+                <mb-tree ref="tree" v-model="temp.menus" :props="{ 'checkable': true ,'multiple':true}" style="height: 270px; overflow: auto" url="/system/menu/tree" :search="true" />
               </a-form-item>
             </a-col>
             <a-col :span="12">
               <a-form-item label="数据权限" name="permission">
                 <mb-select v-model:value="temp.permission" :options="permissionData" />
-                <mb-tree v-if="temp.permission == 1" style="height: 270px; overflow: auto" :props="{ 'check-strictly': true, 'show-checkbox': true }" ref="office" url="/system/office/tree" v-model="temp.offices" />
+                <mb-tree v-if="temp.permission == 1" style="height: 270px; overflow: auto" :props="{ 'checkable': true ,'multiple':true }" ref="office" url="/system/office/tree" v-model="temp.offices" />
               </a-form-item>
             </a-col>
           </a-row>

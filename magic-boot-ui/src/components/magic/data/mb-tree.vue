@@ -5,7 +5,10 @@
         <template #icon><ElIconVerticalAlignMiddleOutlined /></template>
         展开/折叠
       </a-button>
-      <a-button v-if="checked" type="primary" icon="ElIconCheck" plain @click="() => { treeAllChecked = !treeAllChecked; checkedAll(treeData, treeAllChecked) }">全选/全不选</a-button>
+      <a-button v-if="checked" type="primary" plain @click="() => { treeAllChecked = !treeAllChecked; checkedAll(treeData, treeAllChecked) }">
+        <template #icon><ElIconCheckOutlined /></template>
+        全选/全不选
+      </a-button>
     </div>
     <div style="margin-bottom: 5px;" v-if="search">
       <a-input v-model:value="searchValue" placeholder="输入关键字进行过滤" @input="tree.filter(searchValue)" :style="{ width: searchWidth }" />
@@ -17,13 +20,25 @@
       v-bind="props.props"
       node-key="id"
       :default-expand-all="defaultExpandAll"
-      @check-change="checkChange"
-      @node-click="nodeClick"
+      @check="checkChange"
+      @select="nodeClick"
       :props="defaultProps"
       :filter-node-method="searchTree"
       :style="style"
-      :fieldNames = "{children:'children', title:'name', key:'key' }"
+      :fieldNames = "{children:'children', title:'name', key:'id' }"
+      :checkedKeys="checkedKeys"
     />
+
+    <!-- <span>
+      {{treeData}}
+    </span> -->
+
+    <!-- 
+
+      :showCheckbox="true"
+      :multiple="true"
+      :checkable="true"
+     -->
   </div>
 </template>
 
@@ -33,7 +48,7 @@ import { watch, ref, reactive, nextTick, getCurrentInstance, onBeforeMount } fro
 
 const { proxy } = getCurrentInstance()
 
-const emit = defineEmits(['update:modelValue', 'check-change', 'node-click'])
+const emit = defineEmits(['update:modelValue', 'check', 'select'])
 
 const props = defineProps({
   url: {
@@ -85,6 +100,8 @@ const refreshTree = ref(false)
 const treeAllChecked = ref(false)
 const searchValue = ref('')
 
+let checkedKeys = ref([])
+console.log('checkedKeys*************:{}',checkedKeys);
 onBeforeMount(async () => {
   await loadTreeData()
 })
@@ -98,7 +115,11 @@ function selectIds(ids){
   for(var i=0;i<ids.length;i++){
     // tree.value && tree.value.setChecked(ids[i],true,false)
     if(tree.value){
-      tree.value.checked = true;
+      // tree.value.checked = true;
+      if(!checkedKeys.value.includes(ids[i])){
+            checkedKeys.value.push(ids[i]);
+          }
+      // props.checkedKeys.push(ids[i]);
     }
   }
 }
@@ -133,17 +154,18 @@ function getTree() {
 }
 
 function checkChange(node) {
+  console.log('************checkChange:{}',node,tree);
   var selectMenus = []
   var checkedNodes = tree.value.getCheckedNodes(false, true)
   for (var i = 0; i < checkedNodes.length; i++) {
     selectMenus.push(checkedNodes[i].id)
   }
   emit('update:modelValue', selectMenus.join(','))
-  emit('check-change', selectMenus.join(','))
+  emit('check', selectMenus.join(','))
 }
 
 function nodeClick(param1, param2, param3){
-  emit('node-click', param1, param2, param3)
+  emit('select', param1, param2, param3)
 }
 
 function checkedAll(children, checked) {
@@ -154,10 +176,37 @@ function checkedAll(children, checked) {
         checkedAll(children[i].children, checked)
       }
       // tree.value.setChecked(id, checked, true)
-      tree.value.checked = checked;
+      // console.log('***********id::{}',id,tree);
+      // tree.value.checked = checked;
+      
+        if(checked){
+          if(!checkedKeys.value.includes(id)){
+            checkedKeys.value.push(id);
+          }
+        }else{
+           if(checkedKeys.value.includes(id)){
+              checkedKeys.value.splice(arrayFindIndex(checkedKeys.value,id),1);
+           }
+        }
     }
+    
+    
+    //  if(!checked){
+    //   console.log('**********2222222222222:{}',props.checkedKeys);
+    //     props.checkedKeys = [];
+    //   }
   }
 }
+
+/**
+ * 找数组下标方法
+ */
+function arrayFindIndex(arr,val) { 
+  for (var i = 0; i < arr.length; i++) { 
+    if (arr[i] == val) return i; 
+  } 
+  return -1; 
+};
 
 defineExpose({ getTree })
 

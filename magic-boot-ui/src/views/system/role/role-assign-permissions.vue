@@ -1,5 +1,5 @@
 <template>
-  <mb-tree ref="tree" v-model="menus" :props="{ 'show-checkbox': true }" url="/system/menu/tree" :search="true" search-width="230px" />
+  <mb-tree ref="tree" v-model:value="menus" :props="{ 'checkable': true ,'multiple':true}" url="/system/menu/tree" :search="true" search-width="230px" />
 </template>
 
 <script setup>
@@ -17,6 +17,7 @@ const menus = ref('')
 
 proxy.$get('/system/menu/by/role',{ roleId: props.id }).then(res => {
   menus.value = res.data.join(',')
+  // menus.value = res.data;
 })
 
 function save(d) {

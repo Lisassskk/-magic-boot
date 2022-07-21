@@ -127,9 +127,11 @@ service.interceptors.response.use(
           }
         }
         if (res.code !== 402) {
-          if(currentMessage){
-            currentMessage.close()
-          }
+          console.log('****************res:{}',res);
+          console.log('currentMessage:{{{{}}}',currentMessage);
+          // if(currentMessage){
+          //   currentMessage.close()
+          // }
           if(res.code == 403 && import.meta.env.MODE == 'demo'){
             res.message = '演示模式，不允许操作！'
           }
@@ -148,10 +150,10 @@ service.interceptors.response.use(
     })
   },
   error => {
-    // console.log('err' + error) // for debug
-    if(currentMessage){
-      currentMessage.close()
-    }
+    console.log('err' + error) // for debug
+    // if(currentMessage){
+    //   currentMessage.close()
+    // }
     // currentMessage = ElMessage({
     //   message: error.message,
     //   type: 'error',

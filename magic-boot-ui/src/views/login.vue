@@ -29,7 +29,7 @@
   import { login } from '@/scripts/auth'
   const { proxy } = getCurrentInstance()
   const codeImg = ref()
-  const loginForm = reactive({
+  let loginForm = reactive({
     username: '',
     password: '',
     code: ''
@@ -44,7 +44,7 @@
   refreshCode()
   function handleLogin() {
     if(!loginForm.username){
-      proxy.$message({
+      proxy.$message.open({
         message: '请输入用户名',
         type: 'error',
         duration: 2000,
@@ -52,7 +52,7 @@
       })
       return
     }else if(!loginForm.password){
-      proxy.$message({
+      proxy.$message.open({
         message: '请输入密码',
         type: 'error',
         duration: 2000,

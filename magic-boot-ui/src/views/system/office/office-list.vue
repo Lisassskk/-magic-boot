@@ -49,7 +49,7 @@
             </a-col>
             <a-col :span="12">
               <a-form-item label="上级机构" name="pid">
-                <a-tree-select v-model:value="temp.pid" :key="temp.pid" :tree-data="officeTree" style="width: 100%" check-strictly />
+                <a-tree-select v-model:value="temp.pid" :key="temp.pid" :tree-data="officeTree" style="width: 100%" />
               </a-form-item>
             </a-col>
           </a-row>

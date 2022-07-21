@@ -15,13 +15,13 @@
     <div class="left">
       <mb-tree
         url="/system/office/tree"
-        :props="{ 'expand-on-click-node': false,'show-checkbox': true }"
+        :props="{ 'expand-on-click-node': false,'checkable': true ,'multiple':true }"
         :checked-ids="[tableOptions.where.officeId]"
         :expand="false"
         :search="true"
         search-width="100%"
         :checked="false"
-        @check-change="checkChange"
+        @check="checkChange"
       />
     </div>
     <div class="right">

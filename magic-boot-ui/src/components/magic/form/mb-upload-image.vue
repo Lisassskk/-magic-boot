@@ -32,6 +32,17 @@
               console.log('*************e:{}',e);
             }"
           />
+          <a-image
+            :v-else="element"
+            :width="width"
+            :height="height"
+            :src="$global.baseApi + element"
+            :preview="false"
+            :fallback="(e)=>{
+              console.log('*************e:{}',e);
+            }"
+          />
+          
           <!-- 
              v-if="element.response && element.response.code==200"
             :src="$global.baseApi + element.response.data.url"
@@ -114,6 +125,7 @@ import 'vue-cropper/dist/index.css'
 import { VueCropper } from 'vue-cropper'
 import vuedraggable from 'vuedraggable'
 import { getToken } from '@/scripts/auth'
+import { instanceOf } from 'vue-types'
 
 export default {
   name: 'MbUploadImage',
@@ -272,7 +284,7 @@ export default {
         }
         this.onDragEnd()
       } else {
-        this.$message({ type: 'error', message: res.msg })
+        this.$message.open({ type: 'error', message: res.msg })
       }
       this.isUploading = false
     },
@@ -285,19 +297,21 @@ export default {
       this.$get('/system/file/resort', { urls: newUrls.join(',') })
     },
     onExceed() {
-      this.$message({
+      this.$message.open({
         type: 'warning',
         message: `图片超限，最多可上传${this.limit}张图片`
       })
     },
     beforeCropper(element) {
       console.log('*************url:::cropperOption:{}:::{}',element,this.cropperOption.img);
-      if(element.response){
-        const url = element.response.data.url;
-        this.cropperOption.img = this.$global.baseApi + url
-        this.cropperOption.relativeImg = url
-        this.$refs.cropperDialog.show()
+      const url = element;
+      if((element instanceof Object) &&   element.response){
+        console.log('************88执行了');
+        url = element.response.data.url;
       }
+      this.cropperOption.img = this.$global.baseApi + url
+      this.cropperOption.relativeImg = url
+      this.$refs.cropperDialog.show()
     },
     cropper(e) {
        console.log('*************cropper执行了:{}',e);

@@ -9,10 +9,12 @@
     :destroy-on-close="destroyOnClose"
     :append-to-body="true"
     draggable
-    @open="$emit('open')"
-    @opened="opened"
     @afterClose="$emit('close')"
   >
+  <!-- 
+    @open="$emit('open')"
+    @opened="opened"
+   -->
     <slot name="content" />
     <template v-if="showFooter" #footer>
       <div slot="footer" class="dialog-footer">
@@ -65,7 +67,9 @@ export default {
   watch: {
     dialogVisible(value) {
       if(value){
+        console.log('弹框页面加载完毕了');
         this.addStyle()
+        this.opened();
       }else{
         this.removeStyle()
       }
@@ -76,6 +80,7 @@ export default {
   },
   methods: {
     opened(){
+      this.$emit('open')
       this.$emit('opened')
       this.isOpen = true
     },
@@ -97,7 +102,7 @@ export default {
             clearInterval(callbackInterval)
             callback()
           }
-        },1)
+        },200)
       }
     },
     hide() {

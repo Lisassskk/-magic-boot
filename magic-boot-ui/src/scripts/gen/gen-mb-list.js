@@ -55,7 +55,8 @@ function gen(groupPath, data){
             if(d.component){
                 if(d.component.indexOf('upload-image') != -1){
                     type = `,
-                    type: 'image'`
+                    type: 'image',
+                    width: 140`
                 }
             }
             var dictType = ''
@@ -79,20 +80,19 @@ function gen(groupPath, data){
                         {
                             permission: '${permissionPrefix}:save',
                             label: '修改',
-                            type: 'primary',
+                            type: 'text',
                             link: true,
-                            icon: 'ElIconEdit',
+                            icon: 'ElIconEditOutlined',
                             click: (row) => {
                                 magicFormTitle.value = '修改'
-                                formDialog.value.show();
-                                proxy.$nextTick(() => magicForm.value.getDetail(row.id))
+                                formDialog.value.show(() => magicForm.value.getDetail(row.id));
                             }
                         }, {
                             permission: '${permissionPrefix}:delete',
                             label: '删除',
-                            type: 'primary',
+                            type: 'text',
                             link: true,
-                            icon: 'ElIconDelete',
+                            icon: 'ElIconDeleteOutlined',
                             click: (row) => {
                                 proxy.$common.handleDelete({
                                     url: '${groupPath}/delete',

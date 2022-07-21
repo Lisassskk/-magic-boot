@@ -17,10 +17,10 @@
      <template  #tab>
         <a-dropdown  trigger="contextmenu" placement="bottom" style="height: 40px;border: none;">
            <a style="padding: 0px;color:black;" v-if="$route.path != view.path">
-           {{ view.name }}
+           {{ view.meta.title }}
           </a>
           <a style="padding: 0px;color:#1890ff;" v-else>
-            {{ view.name }}
+            {{ view.meta.title }}
           </a>
           <template #overlay>
             <a-menu >

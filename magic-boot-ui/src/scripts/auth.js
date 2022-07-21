@@ -46,6 +46,7 @@ export function login(data){
       data: {
         username: data.username,
         password: sha256(data.password),
+        // password: data.password,
         code: data.code,
         uuid: data.uuid
       }

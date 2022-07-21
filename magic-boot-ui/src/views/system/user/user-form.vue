@@ -27,7 +27,7 @@
     <a-row :gutter="24">
       <a-col :span="12">
         <a-form-item label="组织机构" name="officeId">
-          <mb-treeselect url="/system/user/offices" v-model="temp.officeId" :key="temp.officeId" placeholder="请选择组织机构" check-strictly />
+          <mb-treeselect url="/system/user/offices" v-model="temp.officeId" :key="temp.officeId" placeholder="请选择组织机构"  />
         </a-form-item>
       </a-col>
       <a-col :span="12">

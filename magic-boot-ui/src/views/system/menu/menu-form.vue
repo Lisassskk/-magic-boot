@@ -17,7 +17,7 @@
       </a-col>
       <a-col :span="12">
         <a-form-item label="上级菜单" name="pid">
-          <a-tree-select v-model:value="temp.pid" :tree-data="menuTree" :key="temp.pid" style="width: 100%" check-strictly />
+          <a-tree-select :props="{ 'treeCheckable': true ,'multiple':true}" v-model:value="temp.pid" :tree-data="menuTree" :key="temp.pid" style="width: 100%" />
         </a-form-item>
       </a-col>
     </a-row>
