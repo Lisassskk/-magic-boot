@@ -6,7 +6,6 @@
     :un-checked-value="inactiveValue"
     v-bind="props.props"
   />
-  <span>{{selectValue}}</span>
 </template>
 
 <script setup>
