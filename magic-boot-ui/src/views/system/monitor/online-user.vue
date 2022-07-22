@@ -85,22 +85,53 @@
             {
               permission: 'online:logout',
               label: '踢人',
-              type: 'primary',
+              type: 'text',
               link: true,
               icon: 'ElIconBicycle',
               click: (row) => {
                 // currRow.value = row
                 // magicDialog.value.show()
-                proxy.$alert(`确定要踢“${row.username}”下线吗？`, '提示', {
-                  confirmButtonText: '确定',
-                  callback: (action) => {
-                    if (action === 'confirm') {
-                      proxy.$get('/system/online/logout',{ token: row.token }).then(() => {
-                        magicList.value.reload()
+
+                // proxy.$confirm(`确定要踢“${row.username}”下线吗？`, '提示', {
+                //   confirmButtonText: '确定',
+                //   cancelButtonText: '取消',
+                //   type: 'warning'
+                // }).then((res) => {
+                //   console.log('*********res:{}',res);
+                //   proxy.$get('/system/online/logout',{ token: row.token }).then(() => {
+                //     magicList.value.reload()
+                //   })
+                // })
+
+                proxy.$modal.warning({
+                  okText: '确定',
+                  cancelText: '取消',
+                  content:`确定要踢“${row.username}”下线吗？`,
+                  onOk(){
+                      return new Promise((resolve, reject) => {
+                        proxy.$get('/system/online/logout',{ token: row.token }).then(() => {
+                          magicList.value.reload()
+                        })
+                        resolve();
+                      }).catch((e) => {
+                        console.error('Oops errors!:{}',e)
                       })
-                    }
-                  }
+                  },
+
+                  
                 })
+
+                // proxy.$alert(`确定要踢“${row.username}”下线吗？`, '提示', {
+                //   confirmButtonText: '确定',
+                //   callback: (action) => {
+                //     if (action === 'confirm') {
+                //       proxy.$get('/system/online/logout',{ token: row.token }).then(() => {
+                //         magicList.value.reload()
+                //       })
+                //     }
+                //   }
+                // })
+
               }
             }
           ]

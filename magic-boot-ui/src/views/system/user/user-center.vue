@@ -8,7 +8,7 @@
         <a-input v-model:value="temp.name" disabled />
       </a-form-item>
       <a-form-item label="手机号" name="phone">
-        <a-input v-model.integer="temp.phone" maxlength="11" autocomplete="new-password" />
+        <a-input v-model:value="temp.phone" type="number" :maxlength="11" autocomplete="phone" />
       </a-form-item>
       <a-form-item label="原密码" name="password">
         <a-input v-model:value="temp.password" type="password" autocomplete="new-password" />

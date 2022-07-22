@@ -28,7 +28,7 @@
             :height="height"
             :src="$global.baseApi + element.response.data.url"
             :preview="false"
-            :fallback="(e)=>{
+            :error="(e)=>{
               console.log('*************e:{}',e);
             }"
           />
@@ -38,7 +38,7 @@
             :height="height"
             :src="$global.baseApi + element"
             :preview="false"
-            :fallback="(e)=>{
+            :error="(e)=>{
               console.log('*************e:{}',e);
             }"
           />
@@ -77,11 +77,11 @@
           :maxCount="limit"
           list-type="picture-card"
           v-model:file-list="urls"
-          supportServerRender="false"
           @change="changeValue"
         >
 
         <!--  
+          :supportServerRender="false"
           :limit="limit"
           :style="{ width: width + 'px', height: height + 'px' }"  
            :on-success="handleAvatarSuccess"
@@ -349,6 +349,8 @@ export default {
            this.$emit('change', this.urls) ;
            this.$emit('update:modelValue', this.urls) ;
         }
+      }else if(obj.file.status=='error'){
+
       }
     }
   }

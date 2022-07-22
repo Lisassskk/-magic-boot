@@ -4,8 +4,7 @@ import global from '@/scripts/global'
 import { utils, writeFile } from 'xlsx'
 import { getToken } from '@/scripts/auth'
 
-import { Modal } from 'ant-design-vue'
-import { notification } from 'ant-design-vue';
+import { Modal,notification } from 'ant-design-vue';
 
 const common = {}
 

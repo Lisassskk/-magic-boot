@@ -176,7 +176,7 @@ const props = defineProps({
     default: '暂无数据'
   }
 })
-console.log('*********8props:{}',props);
+// console.log('*********8props:{}',props);
 
 
 // 将string的第一个字母转小写，之外的大写字母加-转小写
@@ -199,7 +199,7 @@ function nameChanged (string) {
 // 兼容 antd 的属性
 if(props.cols && props.cols.length>0){
     for(var col of props.cols){
-      console.log('col::{}',col);
+      // console.log('col::{}',col);
       if(col.label){
         col.title = col.label;
       }

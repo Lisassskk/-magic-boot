@@ -1,9 +1,11 @@
+import {  createVNode } from "vue";
 import axios from 'axios'
 // import { ElMessage, ElMessageBox } from 'element-plus'
-import { message } from 'ant-design-vue';
+import { message,Modal } from 'ant-design-vue';
 import { logout, login } from '@/scripts/auth'
 import { getToken } from '@/scripts/auth'
 import global from '@/scripts/global'
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
 // create an axios instance
 const service = axios.create({
@@ -53,48 +55,29 @@ service.interceptors.response.use(
       const res = response.data
       if (res.code !== 200) {
         var duration = 5
-        if (res.code === 402) {
+        if (res.code === 402 ) {
           duration = 1
           if(global.user.info.username){
             Modal.confirm({
-              title: `提示`,
+              title: `当前账号：${global.user.info.username}凭证已过期，请输入密码重新登录`,
               icon: createVNode(ExclamationCircleOutlined),
-              content: createVNode('div', { style: 'color:red;' },  `当前账号：${global.user.info.username}凭证已过期，请输入密码重新登录`),
+              content: createVNode('input', {id:'modal-input-password',type:"password",class:"ant-input",placeholder:'请输入登录密码'}),
               onOk() {
-                console.log('OK');
-                if (action === 'confirm') {
-                  login({
-                    username: global.user.info.username,
-                    password: instance.inputValue
-                  }).then((res) => {
-                    if (res) {
-                      done()
-                      service(response.config).then(ret => reslove(ret))
-                    }
-                  })
-                } else if (action === 'cancel') {
+                // console.log('OK');
+                login({
+                  username: global.user.info.username,
+                  password: document.getElementById('modal-input-password').value
+                }).then((res) => {
+                  if (res && res.code==200) {
+                    done()
+                    service(response.config).then(ret => reslove(ret))
+                  }
+                }).catch(error=>{
                   logout()
-                } else {
-                  done()
-                }
+                })
               },
               onCancel() {
-                console.log('Cancel');
-                if (action === 'confirm') {
-                  login({
-                    username: global.user.info.username,
-                    password: instance.inputValue
-                  }).then((res) => {
-                    if (res) {
-                      done()
-                      service(response.config).then(ret => reslove(ret))
-                    }
-                  })
-                } else if (action === 'cancel') {
-                  logout()
-                } else {
-                  done()
-                }
+                logout()
               },
               class: 'test',
               okText: '确定',
@@ -127,8 +110,8 @@ service.interceptors.response.use(
           }
         }
         if (res.code !== 402) {
-          console.log('****************res:{}',res);
-          console.log('currentMessage:{{{{}}}',currentMessage);
+          // console.log('****************res:{}',res);
+          // console.log('currentMessage:{{{{}}}',currentMessage);
           // if(currentMessage){
           //   currentMessage.close()
           // }

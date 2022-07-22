@@ -5,17 +5,24 @@
     ref="uploadRef"
     :action="actionUrl"
     :headers="headers"
-    :on-preview="handlePreview"
+    :accept="accept"
+    @preview="handlePreview"
+    :multiple="multiple"
+    :maxCount="limit"
+    @change="change"
+    @reject="handleExceed"
+    :beforeUpload="beforeAvatarUpload"
+    :showUploadList="showFileList"
+  >
+  <!-- <span>{{uploadDomId}}</span> -->
+  <!-- 
+    :file-list="fileList"
+    :show-file-list="showFileList"
     :on-remove="handleRemove"
     :before-remove="beforeRemove"
-    :multiple="multiple"
-    :limit="limit"
-    :on-exceed="handleExceed"
-    :show-file-list="showFileList"
-    :before-upload="beforeAvatarUpload"
     :on-success="handleAvatarSuccess"
-    :file-list="fileList"
-  >
+    :on-exceed="handleExceed"
+   -->
     <a-button type="primary"  :loading="uploadLoading" :disabled="!multiple && fileList.length == 1">
       <template #icon>
         <ElIconCloudUploadOutlined />
@@ -190,7 +197,8 @@ export default {
           this.$emit('change', this.urls)
         }
       } else {
-        document.getElementById(this.uploadDomId).getElementsByClassName('a-upload__input')[0].removeAttribute('disabled')
+        // .getElementsByClassName('ant-upload__input')[0]
+        document.getElementById(this.uploadDomId).removeAttribute('disabled')
         this.$emit('update:modelValue', '')
         this.emitUpdate = true
         this.$emit('change', '')
@@ -198,9 +206,11 @@ export default {
       this.$delete('/system/file/delete', { url: encodeURI(url) })
     },
     handlePreview(file) {
+      console.log('**************handlePreview执行了');
       window.open(this.$global.baseApi + file.response.data.url)
     },
     handleExceed(files, fileList) {
+      console.log("******handleExceed执行了");
       this.$message.warning(`当前限制选择 ${this.limit} 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
     },
     beforeRemove(file, fileList) {
@@ -224,7 +234,7 @@ export default {
             this.$emit('change', this.urls)
           }
         } else {
-          document.getElementById(this.uploadDomId).getElementsByClassName('a-upload__input')[0].setAttribute('disabled', '')
+          document.getElementById(this.uploadDomId).setAttribute('disabled', '')
           this.$emit('update:modelValue', res.data.url)
           this.emitUpdate = true
           this.$emit('change', res.data.url)
@@ -244,7 +254,41 @@ export default {
       }
       return suffixs
     },
+    change({file, fileList } ){
+      
+
+      if(file.status=='uploading'){
+        console.log('******uploading执行了*******file:{}',file);
+        console.log('******uploading执行了*******fileList:{}',fileList);
+        // return this.beforeAvatarUpload(file, fileList);
+      }else if(file.status=='success' || file.status=='done'){
+        console.log('******success执行了*******file:{}',file);
+        console.log('******success执行了*******fileList:{}',fileList);
+        this.handleAvatarSuccess(file.response,file,fileList);
+
+        // console.log('***********obj**:{}', obj);
+        // if(this.join){
+        //   console.log('*************:{}', this.urls);
+        //   console.log('*************:{}',  this.urls.join(','));
+        //   this.$emit('update:modelValue', this.urls.filter(p=>p.status =='done').map(p=>p.response.data.url).join(',')) ;
+        //   this.emitUpdate = true;
+        //   this.$emit('change', this.urls.filter(p=>p.status =='done').map(p=>p.response.data.url).join(',')) ;
+        // }else{
+        //   this.$emit('update:modelValue', this.urls) ;
+        //   this.emitUpdate = true;
+        //   this.$emit('change', this.urls) ;
+        // }
+      }else if(file.status=='removed'){
+        console.log('******remove执行了*******file:{}',file);
+        console.log('******remove执行了*******fileList:{}',fileList);
+        this.handleRemove(file,fileList);
+      }else{
+         console.log('******else执行了*******file:{}',file);
+         console.log('******else执行了*******fileList:{}',fileList);
+      }
+    },
     beforeAvatarUpload(file, fileList) {
+      console.log("******beforeAvatarUpload执行了");
       this.uploadLoading = true
       var fileName = file.name
       var accepts = this.accept.split(',')
@@ -267,6 +311,7 @@ export default {
         this.$message.error(`上传文件大小不能超过 ${this.maxFileSize}MB！`)
         return isLt2M
       }
+      return true;
     },
     getAllSuffixs() {
       var suffixs = ''

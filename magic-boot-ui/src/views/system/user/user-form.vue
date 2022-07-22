@@ -3,7 +3,7 @@
     <a-row :gutter="24">
       <a-col :span="12">
         <a-form-item label="登录名称" name="username">
-          <a-input v-model:value="temp.username" autocomplete="new-password" />
+          <a-input v-model:value="temp.username" autocomplete="username" />
         </a-form-item>
       </a-col>
       <a-col :span="12">
@@ -15,7 +15,7 @@
     <a-row :gutter="24">
       <a-col :span="12">
         <a-form-item label="姓名/昵称" name="name">
-          <a-input v-model:value="temp.name" autocomplete="new-password" />
+          <a-input v-model:value="temp.name" autocomplete="name" />
         </a-form-item>
       </a-col>
       <a-col :span="12">
