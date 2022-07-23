@@ -175,8 +175,7 @@ function save(d) {
         proxy.$notify({
           title: '失败',
           message: '上级菜单不能选当前菜单',
-          type: 'error',
-          duration: 2000
+          type: 'error'
         })
         return
       }
@@ -184,8 +183,7 @@ function save(d) {
         proxy.$notify({
           title: '失败',
           message: '上级菜单不能选当前菜单子级',
-          type: 'error',
-          duration: 2000
+          type: 'error'
         })
         return
       }
@@ -205,8 +203,7 @@ function save(d) {
         proxy.$notify({
           title: '成功',
           message: d.title + '成功',
-          type: 'success',
-          duration: 2000
+          type: 'success'
         })
        
         emit('reload-table')

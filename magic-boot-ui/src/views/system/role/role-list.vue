@@ -224,8 +224,7 @@ function save(d) {
         proxy.$notify({
           title: '成功',
           message: dialogTitle.value + '成功',
-          type: 'success',
-          duration: 2000
+          type: 'success'
         })
       }).catch(() => d.hideLoading())
     }

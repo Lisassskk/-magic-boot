@@ -103,8 +103,7 @@ function importUsers(){
       proxy.$notify({
         title: '成功',
         message: '导入成功',
-        type: 'success',
-        duration: 2000
+        type: 'success'
       })
       previewUsersDialog.value.hide()
       table.value.reload()

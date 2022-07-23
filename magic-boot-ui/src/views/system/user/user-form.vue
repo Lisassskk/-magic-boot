@@ -20,7 +20,7 @@
       </a-col>
       <a-col :span="12">
         <a-form-item label="手机号" name="phone">
-          <a-input v-model:value="temp.phone" />
+          <a-input v-model:value="temp.phone" type="number"  :maxlength="11" autocomplete="phone" />
         </a-form-item>
       </a-col>
     </a-row>
@@ -37,9 +37,9 @@
       </a-col>
     </a-row>
     <a-form-item label="登录状态" name="isLogin" v-if="temp.id != '1'">
-      <a-radio-group v-model="temp.isLogin">
-        <a-radio-button label="0">有效</a-radio-button>
-        <a-radio-button label="1">锁定</a-radio-button>
+      <a-radio-group v-model:value="temp.isLogin">
+        <a-radio-button :value="0">有效</a-radio-button>
+        <a-radio-button :value="1">锁定</a-radio-button>
       </a-radio-group>
     </a-form-item>
   </a-form>
@@ -56,7 +56,8 @@ const rules = reactive({
   name: [{ required: true, message: '请输入姓名/昵称', trigger: 'blur' }],
   username: [{ required: true, message: '请输入登录名称', trigger: 'blur' }],
   roles: [{ required: true, message: '请选择角色', trigger: 'blur' }],
-  officeId: [{ required: true, message: '请选择组织机构', trigger: 'blur' }]
+  officeId: [{ required: true, message: '请选择组织机构', trigger: 'blur' }],
+  phone: [{ min: 11, message: '请输入11位手机号', trigger: 'blur' }]
 })
 const temp = ref(getTemp())
 const isForm = ref(true)
@@ -96,8 +97,7 @@ function save(d) {
         proxy.$notify({
           title: '成功',
           message: d.title + '成功',
-          type: 'success',
-          duration: 2000
+          type: 'success'
         })
         emit('reload-table')
       }).catch(() => d.hideLoading())

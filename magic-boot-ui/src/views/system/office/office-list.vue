@@ -303,8 +303,7 @@ function save(d) {
         proxy.$notify({
           title: '失败',
           message: '上级机构不能选当前机构',
-          type: 'error',
-          duration: 2000
+          type: 'error'
         })
         return
       }
@@ -312,8 +311,7 @@ function save(d) {
         proxy.$notify({
           title: '失败',
           message: '上级机构不能选当前机构子级',
-          type: 'error',
-          duration: 2000
+          type: 'error'
         })
         return
       }
@@ -322,8 +320,7 @@ function save(d) {
         proxy.$notify({
           title: '成功',
           message: dialogTitle.value + '成功',
-          type: 'success',
-          duration: 2000
+          type: 'success'
         })
         reloadTable()
         officeFormDialog.value.hide()

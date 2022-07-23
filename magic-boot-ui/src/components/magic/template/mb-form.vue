@@ -98,8 +98,7 @@
           proxy.$notify({
             title: '成功',
             message: (!formData.value[props.primaryField] ? '创建' : '修改') + '成功',
-            type: 'success',
-            duration: 2000
+            type: 'success'
           })
           if(props.detail && props.detail.formData){
             props.detail.formData = {}

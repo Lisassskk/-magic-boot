@@ -87,8 +87,7 @@ function save() {
         proxy.$notify({
           title: '成功',
           message: (dialogStatus.value === 'create' ? '创建' : '修改') + '成功',
-          type: 'success',
-          duration: 2000
+          type: 'success'
         })
         reloadTable()
       })

@@ -30,8 +30,7 @@ function save(d) {
     proxy.$notify({
       title: '成功',
       message: '分配成功',
-      type: 'success',
-      duration: 2000
+      type: 'success'
     })
     emit('close')
   }).catch(() => d.hideLoading())

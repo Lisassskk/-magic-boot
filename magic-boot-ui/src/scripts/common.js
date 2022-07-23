@@ -52,7 +52,6 @@ common.handleDelete = (options) => {
         notification.open({
           message: '删除成功',
           type: 'success',
-          duration: 2000
         })
         options && options.done()
       })
