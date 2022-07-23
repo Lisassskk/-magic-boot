@@ -67,7 +67,8 @@ import dayjs from 'dayjs';
 
   selectValue.value = props.modelValue;
   watch(() => props.modelValue, (value) => {
-     if(!(value instanceof Array) && value.indexOf(',')>-1){
+    console.log('********************value::{}',value);
+     if(value && !(value instanceof Array) && value.indexOf(',')>-1){
         selectValue.value = value.split(',')
      }else{
         selectValue.value = value

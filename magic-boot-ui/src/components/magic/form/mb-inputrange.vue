@@ -21,10 +21,25 @@ if(props.modelValue){
   input2.value = props.modelValue.split(',')[1]
 }
 
+watch(() => props.modelValue, (value) => {
+     if(value && !(value instanceof Array) && value.indexOf(',')>-1){
+        input1.value = props.modelValue.split(',')[0]
+        input2.value = props.modelValue.split(',')[1]
+     }else{
+        input1.value = null;
+        input2.value = undefined;
+     }
+  })
+
 watch([input1, input2], () => {
-  // console.log('*****************input1::{}',input1);
-  // console.log('*****************input2::{}',input2);
-  emit('update:modelValue', input1.value + ',' + input2.value)
+  if(input1.value && input2.value){
+    emit('update:modelValue', input1.value + ',' + input2.value);
+  }else if(!input1.value && input2.value){
+    emit('update:modelValue',  ',' + input2.value);
+  }else if(input1.value && !input2.value){
+    emit('update:modelValue', input1.value + ',' );
+  }
+  
 })
 </script>
 

@@ -5,7 +5,7 @@
         <a-form-item v-if="it && it.label" :label="it.label" :key="i" >
           <component
               :is="!it.component ? 'mb-input' : it.component.startsWith('a-') || $global.dynamicComponentNames.indexOf(it.component) != -1 ? it.component : 'mb-' + it.component"
-              v-model:value="it.value"
+              v-model="it.value"
               :item-label="it.label"
               v-bind="it.props"
           />
@@ -77,6 +77,7 @@ function search(){
 
 function reset() {
   for(var key in props.where){
+    console.log('*****************key:{}',key,props.notReset);
     if(props.notReset.indexOf(key) == -1){
       if(props.where[key] instanceof Object){
         if(props.where[key].value instanceof Array){
