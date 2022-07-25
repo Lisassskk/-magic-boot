@@ -1,4 +1,6 @@
 function gen(groupPath, data){
+    console.log('******************groupPath::{}',groupPath);
+    console.log('******************data::{}',data);
     var permissionPrefix = groupPath.replace(/^\//,'').replace(/\/\//, '/').replaceAll('/', ':')
     var html = `<template>
     <mb-list ref="magicList" v-bind="listOptions" />
@@ -84,8 +86,9 @@ function gen(groupPath, data){
                             link: true,
                             icon: 'ElIconEditOutlined',
                             click: (row) => {
-                                magicFormTitle.value = '修改'
-                                formDialog.value.show(() => magicForm.value.getDetail(row.id));
+                                magicFormTitle.value = '修改';
+                                // formDialog.value.show(() => magicForm.value.getDetail(row.id));
+                                formDialog.value.show(() => magicForm.value.getDetail(row));
                             }
                         }, {
                             permission: '${permissionPrefix}:delete',

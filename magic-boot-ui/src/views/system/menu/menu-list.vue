@@ -7,26 +7,30 @@
           <a-input v-model:value="searchValue" @input="searchMenu" placeholder="菜单名称、链接、权限标识" style="width: 200px" />
         </a-form-item>
         <a-form-item >
-           <a-button class="filter-item" type="primary"  @click="searchMenu">
-            <template #icon><ElIconSearchOutlined /></template>
-            搜索
-          </a-button>
-          <a-button class="filter-item"  @click="() => { searchValue = ''; searchMenu() }">
-           <template #icon><ElIconDeleteOutlined /></template>
-            清空
-          </a-button>
+          <a-space>
+            <a-button class="filter-item" type="primary"  @click="searchMenu">
+              <template #icon><ElIconSearchOutlined /></template>
+              搜索
+            </a-button>
+            <a-button class="filter-item"  @click="() => { searchValue = ''; searchMenu() }">
+            <template #icon><ElIconDeleteOutlined /></template>
+              清空
+            </a-button>
+          </a-space>
         </a-form-item>
       </a-form>
     </div>
 
     <a-row class="toolbar-container">
-      <a-button class="filter-item" type="primary" @click="addSubMenu('0')" v-permission="'menu:save'">
-        <template #icon><ElIconPlusOutlined /></template>
-        添加菜单
-      </a-button>
-      <a-button type="primary"  plain @click="expand">
-        <template #icon><ElIconVerticalAlignMiddleOutlined /></template>
-      展开/折叠</a-button>
+      <a-space>
+        <a-button class="filter-item" type="primary" @click="addSubMenu('0')" v-permission="'menu:save'">
+          <template #icon><ElIconPlusOutlined /></template>
+          添加菜单
+        </a-button>
+        <a-button type="primary"  plain @click="expand">
+          <template #icon><ElIconVerticalAlignMiddleOutlined /></template>
+        展开/折叠</a-button>
+      </a-space>
     </a-row>
 
     <mb-table ref="table" v-bind="tableOptions" v-if="menuData && menuData.length > 0 && refreshTable" />
@@ -84,8 +88,8 @@ const tableOptions = reactive({
       label: '图标',
       width: 55,
       align: 'center',
-      templet: (row) => {
-        return generateIconCode(row.icon)
+      customRender: (row) => {
+          return generateIconCode(row.icon);
       }
     },
     {

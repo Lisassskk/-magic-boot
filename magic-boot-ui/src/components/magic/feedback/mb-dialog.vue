@@ -67,7 +67,7 @@ export default {
   watch: {
     dialogVisible(value) {
       if(value){
-        console.log('弹框页面加载完毕了');
+        // console.log('弹框页面加载完毕了');
         this.addStyle()
         this.opened();
       }else{
@@ -81,8 +81,8 @@ export default {
   methods: {
     opened(){
       this.$emit('open')
-      this.$emit('opened')
       this.isOpen = true
+      this.$emit('opened')
     },
     confirmClick() {
       this.$emit('confirm-click', this)
@@ -98,11 +98,11 @@ export default {
       if(callback){
         var callbackInterval = setInterval(() => {
           if(this.isOpen){
-            this.isOpen = false
-            clearInterval(callbackInterval)
+            this.isOpen = false;
+            clearInterval(callbackInterval);
             callback()
           }
-        },200)
+        },500)
       }
     },
     hide() {

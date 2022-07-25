@@ -92,7 +92,7 @@ const tableOptions = reactive({
         {
           label: '上移',
           type: 'text',
-          icon: 'ElIconSortUp',
+          icon: 'ElIconUpOutlined',
           click: (row) => {
             proxy.$get('/system/dict/items/sort/up',{
               id: row.id,
@@ -106,7 +106,7 @@ const tableOptions = reactive({
         {
           label: '下移',
           type: 'text',
-          icon: 'ElIconSortDown',
+          icon: 'ElIconDownOutlined',
           click: (row) => {
             proxy.$get('/system/dict/items/sort/down',{
               id: row.id,

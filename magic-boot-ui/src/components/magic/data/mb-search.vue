@@ -8,19 +8,22 @@
               v-model="it.value"
               :item-label="it.label"
               v-bind="it.props"
+              style="min-width:80px"
           />
         </a-form-item>
       </span>
       <a-form-item>
-        <a-button class="filter-item" type="primary"  @click="search">
-          <template #icon><ElIconSearchOutlined /></template>
-          搜索
-        </a-button>
-        <a-button class="filter-item"  @click="reset">
-          <template #icon><ElIconDeleteOutlined /></template>
-          清空
-        </a-button>
-        <slot name="btns" />
+        <a-space>
+          <a-button class="filter-item" type="primary"  @click="search">
+            <template #icon><ElIconSearchOutlined /></template>
+            搜索
+          </a-button>
+          <a-button class="filter-item"  @click="reset">
+            <template #icon><ElIconDeleteOutlined /></template>
+            清空
+          </a-button>
+          <slot name="btns" />
+        </a-space>
       </a-form-item>
     </a-form>
   </div>

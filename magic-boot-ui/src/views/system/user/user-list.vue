@@ -36,12 +36,14 @@
       </mb-search>
 
       <a-row class="toolbar-container">
-        <a-button v-permission="'user:save'" class="filter-item" type="primary"  @click="handleCreate">
-          <template #icon><ElIconPlusOutlined /></template>
-          添加
-        </a-button>
-        <mb-button v-permission="'user:delete'" plain :request-url="'/system/user/delete'" :btn-type="'delete'" :request-data="{ id: ids }" :after-handler="reloadTable" />
-        <mb-upload-file ref="importUserRef" action="/system/user/import/preview" label="导入用户" :show-tip="false" :show-file-list="false" :show-remove-tip="false" :on-success="importUserSuccess" />
+        <a-space>
+          <a-button v-permission="'user:save'" class="filter-item" type="primary"  @click="handleCreate">
+            <template #icon><ElIconPlusOutlined /></template>
+            添加
+          </a-button>
+          <mb-button v-permission="'user:delete'" plain :request-url="'/system/user/delete'" :btn-type="'delete'" :request-data="{ id: ids }" :after-handler="reloadTable" />
+          <mb-upload-file ref="importUserRef" action="/system/user/import/preview" label="导入用户" :show-tip="false" :show-file-list="false" :show-remove-tip="false" :on-success="importUserSuccess" />
+        </a-space>
       </a-row>
 
       <mb-table ref="table" v-bind="tableOptions" @selection-change="selectionChange" />

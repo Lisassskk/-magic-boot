@@ -112,7 +112,7 @@ const tableOptions = reactive({
     {
       field: 'permission',
       label: '数据权限',
-      templet: (row) => {
+      customRender: (row) => {
         return permissionData[row.permission].label
       }
     },

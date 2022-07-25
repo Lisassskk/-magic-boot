@@ -17,9 +17,6 @@
       tableLayout="auto"
       :pagination="false"
       v-if="list.length"
-     
-
-
     >
 
 <!--       :expandedRowKeys="expandedRowKeys"
@@ -66,15 +63,17 @@
             />
           </div>
           <div v-else-if="column.type == 'btns'">
-            <template v-for="btn in column.btns">
-              <a-button  v-if="btn.if === undefined ? true : btn.if(text)" :key="btn.label" v-permission="btn.permission" :type="btn.type" :size="btn.size || 'small'" :class="btn.class" @click="btn.click(record,index)">
-                <template #icon>
-                  <component v-if="btn.icon" :is="btn.icon" />
-                  <!-- <mb-icon v-if="btn.icon" :icon="btn.icon" style="margin-right: 5px;"/> -->
-                </template>
-                {{ btn.label }}
-              </a-button>
-            </template>
+            <a-space >
+              <template v-for="btn in column.btns">
+                <a-button  v-if="btn.if === undefined ? true : btn.if(text)" :key="btn.label" v-permission="btn.permission" :type="btn.type" :size="btn.size || 'small'" :class="btn.class" @click="btn.click(record,index)">
+                  <template #icon>
+                    <component v-if="btn.icon" :is="btn.icon" />
+                    <!-- <mb-icon v-if="btn.icon" :icon="btn.icon" style="margin-right: 5px;"/> -->
+                  </template>
+                  {{ btn.label }}
+                </a-button>
+              </template>
+            </a-space>
           </div>
           <a-image
             v-else-if="column.type === 'image'"
@@ -196,28 +195,49 @@ function nameChanged (string) {
     return newStr
   }
 
-// 兼容 antd 的属性
-if(props.cols && props.cols.length>0){
-    for(var col of props.cols){
-      // console.log('col::{}',col);
-      if(col.label){
-        col.title = col.label;
-      }
-      if(col.field){
-        col.dataIndex = col.field;
-      }
-      col.key = col.dataIndex;
 
-      // // 将按钮组中的icon修改为antd写法
-      // if(col.btns  && col.btns.length>0){
-      //   for(var btn of col.btns){
-      //       if(btn.icon){
-      //         btn.icon = nameChanged(btn.icon.replaceAll('ElIcon',''));
-      //       }
-      //   }
-      // }
-    }
+function changeTableData(arr){
+  // 兼容 antd 的属性
+  if(arr && arr.length>0){
+      for(var col of arr){
+        if(col && col.children && col.children.length>0){
+          changeTableData(col.children);
+        }
+        if(col.label){
+          col.title = col.label;
+        }
+        if(col.field){
+          col.dataIndex = col.field;
+        }
+        col.key = col.dataIndex;
+      }
+  }
 }
+
+changeTableData(props.cols);
+
+// // 兼容 antd 的属性
+// if(props.cols && props.cols.length>0){
+//     for(var col of props.cols){
+//       // console.log('col::{}',col);
+//       if(col.label){
+//         col.title = col.label;
+//       }
+//       if(col.field){
+//         col.dataIndex = col.field;
+//       }
+//       col.key = col.dataIndex;
+
+//       // // 将按钮组中的icon修改为antd写法
+//       // if(col.btns  && col.btns.length>0){
+//       //   for(var btn of col.btns){
+//       //       if(btn.icon){
+//       //         btn.icon = nameChanged(btn.icon.replaceAll('ElIcon',''));
+//       //       }
+//       //   }
+//       // }
+//     }
+// }
 const emit = defineEmits(['selection-change'])
 
 

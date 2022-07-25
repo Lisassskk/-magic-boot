@@ -40,7 +40,7 @@ const tableOptions = reactive({
       label: '图标',
       width: 55,
       align: 'center',
-      templet: (row) => {
+      customRender: (row) => {
         return generateIconCode(row.icon)
       }
     },

@@ -1,10 +1,10 @@
 {
   "properties" : { },
-  "id" : "35d2f15c25a445099cd387a2c1f9f051",
+  "id" : "055281b8a6434f8ab35d9ebf5dd2f066",
   "script" : null,
   "groupId" : "eb5dbed949de4f50ba4bf59f483252a5",
   "name" : "列表",
-  "createTime" : 1658392889269,
+  "createTime" : 1658588355333,
   "updateTime" : null,
   "lock" : null,
   "createBy" : null,
@@ -84,8 +84,9 @@
                             link: true,
                             icon: 'ElIconEditOutlined',
                             click: (row) => {
-                                magicFormTitle.value = '修改'
-                                formDialog.value.show(() => magicForm.value.getDetail(row.id));
+                                magicFormTitle.value = '修改';
+                                // formDialog.value.show(() => magicForm.value.getDetail(row.id));
+                                formDialog.value.show(() => magicForm.value.getDetail(row));
                             }
                         }, {
                             permission: 'data:test:delete',

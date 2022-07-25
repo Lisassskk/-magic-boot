@@ -110,19 +110,24 @@
     })
   }
 
-  function getDetail(id) {
-    console.log('getDetail被调用了：：{}',id);
-    formData.value[props.primaryField] = id
-    proxy.$get(props.detail.request.url, { [props.primaryField]: id }).then(res => {
-      const { data } = res
-      for (var t in formData.value) {
-        if (data[t] && (!props.detail.excludeAssign || props.detail.excludeAssign.indexOf(t) === -1)) {
-          formData.value[t] = data[t]
-        }
-      }
-    })
+  // function getDetail(id) {
+  //   console.log('getDetail被调用了：：{}',id);
+  //   formData.value[props.primaryField] = id
+  //   proxy.$get(props.detail.request.url, { [props.primaryField]: id }).then(res => {
+  //     const { data } = res
+  //     for (var t in formData.value) {
+  //       if (data[t] && (!props.detail.excludeAssign || props.detail.excludeAssign.indexOf(t) === -1)) {
+  //         formData.value[t] = data[t]
+  //       }
+  //     }
+  //   })
+  // }
+
+  /** 减少不必要的接口请求 */
+  function getDetail(item) {
+      formData.value = item;
   }
 
-  defineExpose({ save, getDetail, getFormData })
+  defineExpose({ save, getDetail , getFormData })
 
 </script>

@@ -13,27 +13,31 @@
           <a-input v-model:value="searchValue" @input="searchOffice" placeholder="机构名称、机构编码"></a-input>
         </a-form-item>
         <a-form-item >
-          <a-button class="filter-item" type="primary" @click="searchOffice">
-            <template #icon><ElIconSearchOutlined /></template>
-            搜索
-          </a-button>
-          <a-button class="filter-item"  @click="() => { searchValue = ''; searchOffice() }">
-            <template #icon><ElIconDeleteOutlined /></template>
-            清空
-          </a-button>
+          <a-space>
+            <a-button class="filter-item" type="primary" @click="searchOffice">
+              <template #icon><ElIconSearchOutlined /></template>
+              搜索
+            </a-button>
+            <a-button class="filter-item"  @click="() => { searchValue = ''; searchOffice() }">
+              <template #icon><ElIconDeleteOutlined /></template>
+              清空
+            </a-button>
+          </a-space>
         </a-form-item>
       </a-form>
     </div>
 
     <a-row class="toolbar-container">
-      <a-button class="filter-item" type="primary"  @click="addSubOffice('0')" v-permission="'office:save'">
-        <template #icon><ElIconPlusOutlined /></template>
-        添加机构
-      </a-button>
-      <a-button type="primary"  plain @click="expand">
-       <template #icon><ElIconVerticalAlignMiddleOutlined /></template>
-       展开/折叠
-      </a-button>
+      <a-space>
+        <a-button class="filter-item" type="primary"  @click="addSubOffice('0')" v-permission="'office:save'">
+          <template #icon><ElIconPlusOutlined /></template>
+          添加机构
+        </a-button>
+        <a-button type="primary"  plain @click="expand">
+        <template #icon><ElIconVerticalAlignMiddleOutlined /></template>
+        展开/折叠
+        </a-button>
+      </a-space>
     </a-row>
 
     <mb-table ref="table" v-bind="tableOptions" v-if="officeData && officeData.length > 0 && refreshTable" />
@@ -168,7 +172,7 @@ const tableOptions = reactive({
           label: '添加下级机构',
           type: 'text',
           permission: 'office:save',
-          icon: 'ElIconPlus',
+          icon: 'ElIconPlusOutlined',
           click: (row) => {
             addSubOffice(row.id)
           }
