@@ -33,7 +33,7 @@ common.getDictLabel = (type, value) => {
 }
 
 common.handleDelete = (options) => {
-  const url = options.url
+  var url = options.url
   const id = options.id
   Modal.confirm({
     title:'提示',

@@ -304,7 +304,7 @@ export default {
     },
     beforeCropper(element) {
       console.log('*************url:::cropperOption:{}:::{}',element,this.cropperOption.img);
-      const url = element;
+      var url = element;
       if((element instanceof Object) &&   element.response){
         console.log('************88执行了');
         url = element.response.data.url;
